@@ -99,7 +99,7 @@ exports.signUp = async(req, res) => {
         if(password !== confirmPassword) {
             return res.status(400).json({
                 success:false,
-                message:'Password & confirmPasswor value does not match, please try again',
+                message:'Password & confirmPassword value does not match, please try again',
             });
         }
 
@@ -250,10 +250,14 @@ exports.login = async(req,res) => {
 exports.changePassword = async(req, res) => {
     try{
         // get data from req body
+        const {oldPassword, newPassword, confirmPassword} = req.body;
+
+
         // get oldpassword, newpassword, confirmNewpassword
         // validation
+        
 
-        // update password in DB
+        // update password in DB   
         // send mail -> password updated
         // return response
 
