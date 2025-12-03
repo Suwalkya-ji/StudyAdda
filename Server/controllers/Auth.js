@@ -1,5 +1,5 @@
-const User = requier("../models/User");
-const OTP = requier("../models/OTP");
+const User = require("../models/User");
+const OTP = require("../models/OTP");
 const otpGenerator = require("otp-generator");
 const Profile = require("../models/Profile");
 const bcrypt = require("bcrypt");
@@ -8,7 +8,7 @@ require("dotenv").config();
 
 
 //  send otp
-exports.sendOTP = async(req, res) => {
+exports.sendotp = async(req, res) => {
     try{
         // fetch email from req body
         const {email} = req.body;
@@ -72,7 +72,7 @@ exports.sendOTP = async(req, res) => {
 
 
 // signup
-exports.signUp = async(req, res) => {
+exports.signup = async(req, res) => {
     try{
         // data fetch form request body
         const {

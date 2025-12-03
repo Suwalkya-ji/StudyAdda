@@ -4,7 +4,9 @@ require("dotenv").config();
 
 
 //  auth
-exports.auth = async(req, res, next) {
+exports.auth = async(req, res, next) => {
+
+
     try{
         // extract token
         const token = req.cookies.token 
@@ -42,6 +44,9 @@ exports.auth = async(req, res, next) {
             });
     }
 }
+
+
+    
 
 // isStudent
 exports.isStudent = async(req, res, next) => {
