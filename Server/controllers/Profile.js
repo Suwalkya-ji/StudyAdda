@@ -110,3 +110,13 @@ exports.getAllUserDetails = async(req,res) => {
         });
     }
 }
+
+// update display picture
+exports.updateDisplayPicture = async(req, res) => {
+    try{
+
+    }
+    catch(error) {
+        
+    }
+}
