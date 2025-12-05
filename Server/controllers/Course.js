@@ -1,6 +1,5 @@
-const { use } = require("react");
 const Course = require("../models/Course");
-const Tag = require("../models/Tags");
+const Category = require("../models/Category");
 const User = require("../models/User");
 const {uploadImageToCloudinary} = require("../utils/imageUploader"); 
 
@@ -157,7 +156,7 @@ exports.getCourseDetails = async (req,res) => {
             
             // validation
             if(!courseDetails) {
-                return res.status(400)json({
+                return res.status(400).json({
                     success:false,
                     message:`Could not find the course with ${courseId}`,
                 })
