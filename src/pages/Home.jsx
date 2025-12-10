@@ -1,13 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { FaArrowRight } from "react-icons/fa";
+import HighlightText from '../component/core/HomePage/HighlightText';
+
+import CTAButton from '../component/core/HomePage/Button';
+import Banner from "../assets/Images/banner.mp4"
 
 const Home = () => {
   return (
     <div>
                 {/* Section 1 */}
     <div className='relative mx-auto flex flex-col w-11/12 items-center
-    text-white justify-between'>
+    text-white justify-between max-w-maxContent'>
 
             <Link to={"/signup"}>
 
@@ -24,10 +28,40 @@ const Home = () => {
 
             </Link>
 
-            <div>
+            <div className='text-center text-4xl font-semibold mt-7'>
                   Empower Your Future with
                   <HighlightText text={"Coding Skills"} />
             </div>
+
+            <div className='mt-4 w-[90%] text-center text-lg font-bold text-richblack-300'>
+                With our online coding courses, you can learn at your own pace, from anywhere in the 
+                world and get access to a wealth of resource, including hands-on projects, quizzes,
+               and personalized feedback from instructors.
+            </div>
+
+            <div className='flex flex-row gap-7 mt-8'>
+                
+                <CTAButton active={true} linkto={"/signup"}>
+                    Learn More
+                </CTAButton>
+
+                <CTAButton active={false} linkto={"/login"}>
+                    Book a Demo
+                </CTAButton>
+
+            </div>
+
+            <div className= 'mx-8 my-14 shadow-blue-200'>
+
+                <video
+                muted
+                loop
+                autoPlay>
+                  <source src={Banner} type='video/mp4' />
+                </video>
+
+            </div>
+
     </div>
 
 
