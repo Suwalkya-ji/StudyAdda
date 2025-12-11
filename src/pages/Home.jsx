@@ -5,13 +5,15 @@ import HighlightText from '../component/core/HomePage/HighlightText';
 
 import CTAButton from '../component/core/HomePage/Button';
 import Banner from "../assets/Images/banner.mp4"
+import CodeBlocks from '../component/core/HomePage/CodeBlocks';
 
 const Home = () => {
   return (
     <div>
+        
                 {/* Section 1 */}
-    <div className='relative mx-auto flex flex-col w-11/12 items-center
-    text-white justify-between max-w-maxContent'>
+    <div className='relative mx-auto flex flex-col w-11/12 max-w-maxContent items-center
+    text-white justify-between '>
 
             <Link to={"/signup"}>
 
@@ -62,11 +64,109 @@ const Home = () => {
 
             </div>
 
+            {/* code section 1 */}
+            <div>
+                <CodeBlocks 
+                    position={"lg:flex-row"}
+                    heading={
+                        <div className='text-4xl font-semibold '>
+                            Unlock Your
+                            <HighlightText text={"Coding Courses "} />
+                            with our online courses
+                        </div>    
+                    }
+
+                    subheading={
+                    "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
+                    }
+
+                    ctabtn1={
+                       {
+                         btnText: "try it yourself",
+                         linkto: "/signup",
+                         active: true,
+                       } 
+                    }
+
+                    ctabtn2={
+                       {
+                         btnText: "learn more",
+                         linkto: "/login",
+                         active: false,
+                       } 
+                    }
+
+                    codeblock={`<!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8" />
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                        <title>Document</title>
+                    </head>
+                    <body>
+                    </body>
+                    </html> `}
+                    codeColor={"text-yellow-25"}
+
+                />
+            </div>
+
+            {/* code section 2 */}
+            <div>
+                <CodeBlocks 
+                    position={"lg:flex-row-reverse"}
+                    heading={
+                        <div className='text-4xl font-semibold '>
+                            Unlock Your
+                            <HighlightText text={"Coding Courses "} />
+                            with our online courses
+                        </div>    
+                    }
+                    
+
+                    subheading={
+                    "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
+                    }
+
+                    ctabtn1={
+                       {
+                         btnText: "try it yourself",
+                         linkto: "/signup",
+                         active: true,
+                       } 
+                    }
+
+                    ctabtn2={
+                       {
+                         btnText: "learn more",
+                         linkto: "/login",
+                         active: false,
+                       } 
+                    }
+
+                    codeblock={`<!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8" />
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                        <title>Document</title>
+                    </head>
+                    <body>
+                    </body>
+                    </html> `}
+                    codeColor={"text-yellow-25"}
+
+                    backgroundGradient={"bg-gradient-to-tr from-rose-500 to-blue-50"}
+
+                />
+            </div>
+
+
+           
     </div>
 
 
 
-                {/* Section 2 */}
                 {/* Section 3 */}
                 {/* Footer */}
 
