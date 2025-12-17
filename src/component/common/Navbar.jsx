@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, matchPath } from 'react-router-dom'
 import logo from '../../assets/Logo/Logo-Full-Light.png'
 import {NavbarLinks} from '../../data/navbar-links'
@@ -10,13 +10,8 @@ import { apiConnector } from '../../services/apiconnector'
 import { categories } from '../../services/api'
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 
-const Navbar = () => {
 
-    const {token} = useSelector((state) => state.auth);
-    const {user} = useSelector((state) => state.profile);
-    const {totalItems} = useSelector ((state) => state.cart);
-
-    const subLinks = [
+    const ssubLinks = [
         {
             title: "python",
             link: '/catalog/python'
@@ -27,24 +22,31 @@ const Navbar = () => {
         }
     ]
 
-    // const [subLinks, setSubLinks] = useState([]);
+const Navbar = () => {
 
-    // const fetchSubLinks = async() => {
-    //             try {
-    //                 const result = await apiConnector("GET", categories.CATEGORIES_API) ;
-    //                 console.log("printing sublinks results: ", result);
-    //                 setSubLinks(result.data.data)              
-    //             }
-    //             catch (error) {
-    //                 console.log("Could not fetch the category list")
-    //             }
-    //         }
-
-    // useEffect( () => {
-    //     //   fetchSubLinks();  
-    // },[])
-
+    const {token} = useSelector((state) => state.auth);
+    const {user} = useSelector((state) => state.profile);
+    const {totalItems} = useSelector ((state) => state.cart);
     const location = useLocation();
+
+
+    const [subLinks, setSubLinks] = useState([]);
+
+    const fetchSubLinks = async() => {
+                try {
+                    const result = await apiConnector("GET", categories.CATEGORIES_API) ;
+                    console.log("printing sublinks results: ", result);
+                    setSubLinks(result.data.data)              
+                }
+                catch (error) {
+                    console.log("Could not fetch the category list", error)
+                }
+            }
+
+    useEffect( () => {
+          fetchSubLinks();  
+    },[])
+
     const matchRoute = (route) => {
         return matchPath({path:route}, location.pathname);
     }
