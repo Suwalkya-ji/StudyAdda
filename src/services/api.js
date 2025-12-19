@@ -13,3 +13,5 @@ export const endpoints = {
   RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
   RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
 }
+
+// class 3
