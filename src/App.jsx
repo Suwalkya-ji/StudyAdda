@@ -6,6 +6,7 @@ import Home from "./pages/Home"
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import About from "./pages/About";
+import VerifyEmail from "./pages/VerifyEmail";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
               <Route path="/login" element= {<Login/>} />
               <Route path="/signup" element= {<Signup/>} />
               <Route path="/about" element= {<About/>} />
+              <Route path="/verify-email" element={<VerifyEmail />} />
 
           </Routes>
 

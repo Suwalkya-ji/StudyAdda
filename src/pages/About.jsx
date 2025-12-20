@@ -17,7 +17,7 @@ const About = () => {
             <section>
                 <div>
                     <header>
-                        Driving innovation in Online Education foa a
+                        Driving innovation in Online Education for a
                         <HighlightText text={"Brighter Future"}/>
                         <p>StudyAdda is at the forefront of drivrng innovation 
                             in online education. We're passionate about creating a 
