@@ -23,6 +23,8 @@ function App() {
               <Route path="/about" element= {<About/>} />
               <Route path="/verify-email" element={<VerifyEmail />} />
 
+              <Route path="dashboard/my-profile" element={<MyProfile/>} />
+
           </Routes>
 
     </div>
