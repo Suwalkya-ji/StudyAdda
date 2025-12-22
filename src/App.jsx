@@ -7,6 +7,10 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import About from "./pages/About";
 import VerifyEmail from "./pages/VerifyEmail";
+import MyProfile from "./component/core/Dashboard/MyProfile";
+import Dashboard from "./pages/Dashboard"
+import PrivateRoute from "./component/core/Auth/PrivateRoute";
+import Error from './pages/Error'
 
 
 function App() {
@@ -23,7 +27,17 @@ function App() {
               <Route path="/about" element= {<About/>} />
               <Route path="/verify-email" element={<VerifyEmail />} />
 
-              <Route path="dashboard/my-profile" element={<MyProfile/>} />
+              <Route element={
+                  <PrivateRoute>
+                      <Dashboard/>
+                  </PrivateRoute>
+                } >
+
+                      <Route path="dashboard/my-profile" element={<MyProfile/>} />
+              </Route>
+                 
+
+              <Route path="*" element={<Error/>}/>
 
           </Routes>
 
