@@ -13,7 +13,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import MyProfile from "./component/core/Dashboard/MyProfile";
 import Dashboard from "./pages/Dashboard";
-import PrivateRoute from "./component/core/Auth/PrivateRoute";
+import PrivateRoute from  "./component/core/Auth/PrivateRoute"
 import Error from "./pages/Error"
 import Settings from "./component/core/Dashboard/Settings";
 import { useDispatch, useSelector } from "react-redux";
@@ -90,8 +90,9 @@ function App() {
 
     <Route 
       element={
+        
         <PrivateRoute>
-          <Dashboard />
+          <Dashboard/>
         </PrivateRoute>
       }
     >
