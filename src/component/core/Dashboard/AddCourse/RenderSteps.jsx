@@ -2,7 +2,7 @@ import React from 'react'
 import { FaCheck } from 'react-icons/fa';
 import { useSelector } from 'react-redux'
 import CourseBuilderForm from './CourseBuilder/CourseBuilderForm';
-import CourseInformationForm from './CourseBuilder/CourseBuilderForm';
+import CourseInformationForm from './CourseInformation/CourseInformationForm';
 
 const RenderSteps = () => {
 
@@ -39,7 +39,7 @@ const RenderSteps = () => {
 
                         </div>
                     </div>
-                   {/* Add COde for dashes between the labels */}
+                   {/* Add Code for dashes between the labels */}
                 </>
             ) )}
         </div>
@@ -54,6 +54,8 @@ const RenderSteps = () => {
         </div>
 
         {step === 1 && <CourseInformationForm />}
+
+
         {step === 2 && <CourseBuilderForm/>}
         {/* {step===3 && <PublishCourse/>} */}
     </>

@@ -263,6 +263,7 @@ const CourseInformationForm = () => {
             setValue={setValue}
             getValues={getValues}
         />
+
         <div>
             {
                 editCourse && (
@@ -275,7 +276,7 @@ const CourseInformationForm = () => {
                 )
             }
 
-            <IconBtn
+            <IconBtn 
                 text={!editCourse ? "Next" : "Save Changes"}
                 />
         </div>
