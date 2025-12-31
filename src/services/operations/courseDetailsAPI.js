@@ -237,6 +237,7 @@ export const deleteSection = async (data, token) => {
   toast.dismiss(toastId)
   return result
 }
+
 // delete a subsection
 export const deleteSubSection = async (data, token) => {
   let result = null

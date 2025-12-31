@@ -11,33 +11,44 @@ exports.createCourse = async(req,res) => {
 		const userId = req.user.id;
 
         // fetch data
-        let {courseName,
+        let {
+              courseName,
               courseDescription,
               whatYouWillLearn,
               price,
-            //   tag,
+              tag: _tag,
               category,
               status,
-              instructions,
+              instructions: _instructions,
             } = req.body;
 
         // get thumbnail
-        // const thumbnail = req.files.thumbnailImage;
+        const thumbnail = req.files.thumbnailImage;
+
+         // Convert the tag and instructions from stringified Array to Array
+            const tag = JSON.parse(_tag)
+            const instructions = JSON.parse(_instructions)
+
+            console.log("tag", tag)
+            console.log("instructions", instructions)
 
         // validation
-        if(!courseName ||
+        if(
+           !courseName ||
            !courseDescription ||
            !whatYouWillLearn ||
            !price ||
-        //    !tag ||
-        //    !thumbnail || 
-           !category
-        ){
+           !tag.length ||
+           !thumbnail || 
+           !category ||
+           !instructions.length
+        ) {
             return res.status(400).json({
                 success:false,
                 message:'All fields are required',
             });
         }
+
         if (!status || status === undefined) {
 			status = "Draft";
 		}
@@ -65,46 +76,66 @@ exports.createCourse = async(req,res) => {
         if(!categoryDetails) {
             return res.status(400).json({
                 success:false,
-                message:'category Details not found',
+                message:'Category Details not found',
             });
         }
 
-        // upload Image to Cloudinary
-        const thumbnailImage = await uploadImageToCloudinary(thumbnail, process.env.FOLDER_NAME);
+        // // upload Image to Cloudinary
+        const thumbnailImage = await uploadImageToCloudinary(
+            thumbnail,
+            process.env.FOLDER_NAME
+        );
+
+        console.log(thumbnailImage)
 
         // create a entry for new course
         const newCourse = await Course.create({
             courseName,
             courseDescription,
-            instructor:instructorDetails._id,
+            instructor: instructorDetails._id,
             whatYouWillLearn: whatYouWillLearn,
             price,
-            // tag: tag,
+            tag: tag,
             category: categoryDetails._id,
             thumbnail:thumbnailImage.secure_url,
-            // status: status,
+            status: status,
             instruction : instructions,
         })
 
         // add the new course to the user schema of Instructor
         await User.findByIdAndUpdate(
-            {_id: instructorDetails._id},
+            {
+                _id: instructorDetails._id
+            },
             {
                 $push:{
-                    courses:newCourse._id
+                    courses: newCourse._id
                 }
             },
             {new:true},
         )
 
+        // add the new course to the categories
+        const categoryDetails2 = await Category.findByIdAndUpdate(
+            {_id: category },
+            {
+                $push: {
+                    courses : newCourse._id,
+                },
+            },
+            {new : true}
+        );
+
+        console.log("HEREEEEEEEE", categoryDetails2)
+
         //Todo:  update the Tag ka schema (HW milla h )
         // update the Tag 
 
 
-        return res.status(200).json({
+         res.status(200).json({
             success:true,
-            message:"Course Created Successfully ",
-            data :newCourse
+            data : newCourse,
+            message: "Course Created Successfully ",
         });
 
     }
@@ -121,7 +152,6 @@ exports.createCourse = async(req,res) => {
 
 
 // get All Course handler function
-
 exports.getAllCourses = async(req,res) => {
     try{
             const allCourses = await Course.find({})
@@ -153,7 +183,6 @@ exports.getAllCourses = async(req,res) => {
 
 
 // get Course Details 
-
 exports.getCourseDetails = async (req,res) => {
     try{
             // get ID 

@@ -19,6 +19,7 @@
     "concurrently": "^7.5.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.68.0",
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
@@ -26,7 +27,9 @@
     "react-rating-stars-component": "^2.2.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.10.1",
+    "react-super-responsive-table": "^6.0.2",
     "react-type-animation": "^3.2.0",
+    "swiper": "^12.0.3",
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
