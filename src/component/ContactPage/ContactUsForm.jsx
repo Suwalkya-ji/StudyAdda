@@ -50,7 +50,6 @@ const ContactUsForm = () => {
     >
       <div className="flex flex-col gap-5 lg:flex-row">
         <div className="flex flex-col gap-2 lg:w-[48%]">
-            {/* first Name */}
           <label htmlFor="firstname" className="lable-style">
             First Name
           </label>
@@ -69,7 +68,6 @@ const ContactUsForm = () => {
           )}
         </div>
         <div className="flex flex-col gap-2 lg:w-[48%]">
-            {/* last name */}
           <label htmlFor="lastname" className="lable-style">
             Last Name
           </label>
@@ -84,7 +82,6 @@ const ContactUsForm = () => {
         </div>
       </div>
 
-          {/* email */}
       <div className="flex flex-col gap-2">
         <label htmlFor="email" className="lable-style">
           Email Address
@@ -104,7 +101,6 @@ const ContactUsForm = () => {
         )}
       </div>
 
-        {/* Phone number */}
       <div className="flex flex-col gap-2">
         <label htmlFor="phonenumber" className="lable-style">
           Phone Number

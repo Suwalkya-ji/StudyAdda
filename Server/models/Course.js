@@ -58,7 +58,7 @@ instruction:{
 },
 status:{
     type:String,
-    enum:["Deaft", "Published"],
+    enum:["Draft", "Published"],
 }
 
        

@@ -95,10 +95,7 @@ exports.capturePayment = async(req,res) => {
 }
 
 
-
-
 //  verify Signature of Razorpay and server
-
 exports.verifySignature = async(req,res) => {
     const webhookSecrect = "12345678"    //server se milli secrect key
 

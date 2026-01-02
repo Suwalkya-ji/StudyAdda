@@ -80,7 +80,8 @@ export default function CourseInformationForm() {
 
   //   handle next button click
   const onSubmit = async (data) => {
-    // console.log(data)
+    console.log(data)
+    console.log("token -> ", token);
 
     if (editCourse) {
       // const currentValues = getValues()
@@ -136,6 +137,8 @@ export default function CourseInformationForm() {
       return
     }
 
+    
+
     const formData = new FormData()
     formData.append("courseName", data.courseTitle)
     formData.append("courseDescription", data.courseShortDesc)
@@ -146,6 +149,8 @@ export default function CourseInformationForm() {
     formData.append("status", COURSE_STATUS.DRAFT)
     formData.append("instructions", JSON.stringify(data.courseRequirements))
     formData.append("thumbnailImage", data.courseImage)
+    
+
     setLoading(true)
     const result = await addCourseDetails(formData, token)
     if (result) {
