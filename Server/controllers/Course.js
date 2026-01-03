@@ -155,16 +155,30 @@ exports.editCourse = async (req, res) => {
       course.thumbnail = thumbnailImage.secure_url
     }
 
+// problem in hasownproperty not working
     // Update only the fields that are present in the request body
-    for (const key in updates) {
-      if (updates.hasOwnProperty(key)) {
-        if (key === "tag" || key === "instructions") {
-          course[key] = JSON.parse(updates[key])
-        } else {
-          course[key] = updates[key]
-        }
-      }
+    // for (const key in updates) {
+    //   if (updates.hasOwnProperty(key)) {
+    //     if (key === "tag" || key === "instructions") {
+    //       course[key] = JSON.parse(updates[key])
+    //     } else {
+    //       course[key] = updates[key]
+    //     }
+    //   }
+    // }
+
+// alternate of hasownprperty  -> working
+for (const key in updates) {
+  if (Object.prototype.hasOwnProperty.call(updates, key)) {
+    if (key === "tag" || key === "instructions") {
+      course[key] = JSON.parse(updates[key])
+    } else if (key !== "courseId") {
+      course[key] = updates[key]
     }
+  }
+}
+
+
 
     await course.save()
 

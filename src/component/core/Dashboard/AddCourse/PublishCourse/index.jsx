@@ -44,6 +44,7 @@ export default function PublishCourse() {
       goToCourses()
       return
     }
+    // if form is updated
     const formData = new FormData()
     formData.append("courseId", course._id)
     const courseStatus = getValues("public")
