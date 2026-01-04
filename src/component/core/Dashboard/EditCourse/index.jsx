@@ -16,6 +16,9 @@ export default function EditCourse() {
   const [loading, setLoading] = useState(false)
   const { token } = useSelector((state) => state.auth)
 
+  console.log("COurse id -> ", courseId);
+  console.log("COurse h -> ", course);
+
   useEffect(() => {
     ;(async () => {
       setLoading(true)
