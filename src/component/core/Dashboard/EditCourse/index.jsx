@@ -16,11 +16,9 @@ export default function EditCourse() {
   const [loading, setLoading] = useState(false)
   const { token } = useSelector((state) => state.auth)
 
-  console.log("COurse id -> ", courseId);
-  console.log("COurse h -> ", course);
 
   useEffect(() => {
-    ;(async () => {
+    const populateCourseDetails = async () => {
       setLoading(true)
       const result = await getFullDetailsOfCourse(courseId, token)
       if (result?.courseDetails) {
@@ -28,7 +26,8 @@ export default function EditCourse() {
         dispatch(setCourse(result?.courseDetails))
       }
       setLoading(false)
-    })()
+    }
+    populateCourseDetails();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -59,24 +59,48 @@ export default function CourseInformationForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // nhi chala yee
+
+  // const isFormUpdated = () => {
+  //   const currentValues = getValues()
+  //   // console.log("changes after editing form values:", currentValues)
+  //   if (
+  //     currentValues.courseTitle !== course.courseName ||
+  //     currentValues.courseShortDesc !== course.courseDescription ||
+  //     currentValues.coursePrice !== course.price ||
+  //     currentValues.courseTags.toString() !== course.tag.toString() ||
+  //     currentValues.courseBenefits !== course.whatYouWillLearn ||
+  //     currentValues.courseCategory._id !== course.category._id ||
+  //     currentValues.courseRequirements.toString() !==
+  //       course.instructions.toString() ||
+  //     currentValues.courseImage !== course.thumbnail
+  //   ) {
+  //     return true
+  //   }
+  //   return false
+  // }
+
   const isFormUpdated = () => {
-    const currentValues = getValues()
-    // console.log("changes after editing form values:", currentValues)
-    if (
-      currentValues.courseTitle !== course.courseName ||
-      currentValues.courseShortDesc !== course.courseDescription ||
-      currentValues.coursePrice !== course.price ||
-      currentValues.courseTags.toString() !== course.tag.toString() ||
-      currentValues.courseBenefits !== course.whatYouWillLearn ||
-      currentValues.courseCategory._id !== course.category._id ||
-      currentValues.courseRequirements.toString() !==
-        course.instructions.toString() ||
-      currentValues.courseImage !== course.thumbnail
-    ) {
-      return true
-    }
-    return false
+  const currentValues = getValues()
+
+  if (
+    currentValues.courseTitle !== course.courseName ||
+    currentValues.courseShortDesc !== course.courseDescription ||
+    Number(currentValues.coursePrice) !== Number(course.price) ||
+    JSON.stringify(currentValues.courseTags || []) !==
+      JSON.stringify(course.tag || []) ||
+    currentValues.courseBenefits !== course.whatYouWillLearn ||
+    currentValues.courseCategory !== course.category?._id ||
+    JSON.stringify(currentValues.courseRequirements || []) !==
+      JSON.stringify(course.instructions || []) ||
+    currentValues.courseImage !== course.thumbnail
+  ) {
+    return true
   }
+  return false
+}
+
+
 
   //   handle next button click
   const onSubmit = async (data) => {
@@ -112,8 +136,8 @@ export default function CourseInformationForm() {
           formData.append("category", data.courseCategory)
         }
         if (
-          currentValues.courseRequirements.toString() !==
-          course.instructions.toString()
+          JSON.stringify(currentValues.courseRequirements || []) !==
+          JSON.stringify(course.instructions || [])
         ) {
           formData.append(
             "instructions",
