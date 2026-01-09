@@ -5,6 +5,8 @@ const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const {courseEnrollmentEmail} = require("../mail/templates/courseEnrollmentEmail");
 const { default: mongoose } = require("mongoose");
+const {paymentSuccessEmail} = require("../mail/templates/paymentSuccessEmail")
+const crypto = require("crypto")
 
 
                 //  Without using webhook and for multiple items dono ka process same h
