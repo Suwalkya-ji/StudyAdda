@@ -59,27 +59,6 @@ export default function CourseInformationForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // nhi chala yee
-
-  // const isFormUpdated = () => {
-  //   const currentValues = getValues()
-  //   // console.log("changes after editing form values:", currentValues)
-  //   if (
-  //     currentValues.courseTitle !== course.courseName ||
-  //     currentValues.courseShortDesc !== course.courseDescription ||
-  //     currentValues.coursePrice !== course.price ||
-  //     currentValues.courseTags.toString() !== course.tag.toString() ||
-  //     currentValues.courseBenefits !== course.whatYouWillLearn ||
-  //     currentValues.courseCategory._id !== course.category._id ||
-  //     currentValues.courseRequirements.toString() !==
-  //       course.instructions.toString() ||
-  //     currentValues.courseImage !== course.thumbnail
-  //   ) {
-  //     return true
-  //   }
-  //   return false
-  // }
-
   const isFormUpdated = () => {
   const currentValues = getValues()
 
@@ -100,12 +79,9 @@ export default function CourseInformationForm() {
   return false
 }
 
-
-
   //   handle next button click
   const onSubmit = async (data) => {
-    console.log(data)
-    console.log("token -> ", token);
+    // console.log(data)
 
     if (editCourse) {
       // const currentValues = getValues()
@@ -136,8 +112,8 @@ export default function CourseInformationForm() {
           formData.append("category", data.courseCategory)
         }
         if (
-          JSON.stringify(currentValues.courseRequirements || []) !==
-          JSON.stringify(course.instructions || [])
+          currentValues.courseRequirements.toString() !==
+          course.instructions.toString()
         ) {
           formData.append(
             "instructions",
@@ -161,8 +137,6 @@ export default function CourseInformationForm() {
       return
     }
 
-    
-
     const formData = new FormData()
     formData.append("courseName", data.courseTitle)
     formData.append("courseDescription", data.courseShortDesc)
@@ -173,8 +147,6 @@ export default function CourseInformationForm() {
     formData.append("status", COURSE_STATUS.DRAFT)
     formData.append("instructions", JSON.stringify(data.courseRequirements))
     formData.append("thumbnailImage", data.courseImage)
-    
-
     setLoading(true)
     const result = await addCourseDetails(formData, token)
     if (result) {

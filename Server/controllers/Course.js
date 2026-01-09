@@ -249,7 +249,15 @@ exports.getAllCourses = async (req, res) => {
 
 exports.getCourseDetails = async (req, res) => {
   try {
-    const { courseId } = req.body
+    const { courseId } = req.body;
+
+    // if (!courseId) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "courseId is required",
+    //   })
+    // }
+
     const courseDetails = await Course.findOne({
       _id: courseId,
     })

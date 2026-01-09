@@ -1,9 +1,8 @@
-import React from 'react'
 import {toast} from "react-hot-toast"
 import { apiConnector } from '../apiconnector';
 import { catalogData } from '../api';
 
-export const getCatalogaPageData = async(categoryId) => {
+export const getCatalogPageData = async(categoryId) => {
   const toastId = toast.loading("Loading...");
   let result = [];
   try{
@@ -24,4 +23,3 @@ export const getCatalogaPageData = async(categoryId) => {
   toast.dismiss(toastId);
   return result;
 }
-

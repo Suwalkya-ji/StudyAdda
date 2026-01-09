@@ -21,7 +21,6 @@ export function updateDisplayPicture(token, formData) {
         UPDATE_DISPLAY_PICTURE_API,
         formData,
         {
-          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         }
       )
@@ -84,7 +83,7 @@ export async function changePassword(token, formData) {
     toast.success("Password Changed Successfully")
   } catch (error) {
     console.log("CHANGE_PASSWORD_API API ERROR............", error)
-    toast.error(error.response.data.message)
+    toast.error(error.response?.data?.message || error.message)
   }
   toast.dismiss(toastId)
 }

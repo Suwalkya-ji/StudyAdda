@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 const Course_Card = ({course, Height}) => {
 
-
     const [avgReviewCount, setAvgReviewCount] = useState(0);
 
     useEffect(()=> {
@@ -26,7 +25,7 @@ const Course_Card = ({course, Height}) => {
                         className={`${Height} w-full rounded-xl object-cover`}
                     />
                 </div>
-                <div>
+                <div className='text-white'>
                     <p>{course?.courseName}</p>
                     <p>{course?.instructor?.firstName} {course?.instructor?.lastName} </p>
                     <div className='flex gap-x-3'>

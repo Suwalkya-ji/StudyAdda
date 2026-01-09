@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { studentEndpoints } from "../apis";
+import { studentEndpoints } from "../api";
 import { apiConnector } from "../apiconnector";
 import rzpLogo from "../../assets/Logo/rzp_logo.png"
 import { setPaymentLoading } from "../../slices/courseSlice";
@@ -46,9 +46,18 @@ export async function buyCourse(token, courses, userDetails, navigate, dispatch)
             throw new Error(orderResponse.data.message);
         }
         console.log("PRINTING orderResponse", orderResponse);
+        
+        console.log("Razorpay Key:", import.meta.env.VITE_RAZORPAY_KEY)
+
+        if (!import.meta.env.VITE_RAZORPAY_KEY) {
+            throw new Error("Razorpay Key is missing. Please check your .env file.");
+        }
+
+
+
         //options
         const options = {
-            key: process.env.RAZORPAY_KEY,
+            key: import.meta.env.VITE_RAZORPAY_KEY,
             currency: orderResponse.data.message.currency,
             amount: `${orderResponse.data.message.amount}`,
             order_id:orderResponse.data.message.id,
@@ -109,7 +118,7 @@ async function verifyPayment(bodyData, token, navigate, dispatch) {
         if(!response.data.success) {
             throw new Error(response.data.message);
         }
-        toast.success("payment Successful, ypou are addded to the course");
+        toast.success("Payment Successful, you are added to the course");
         navigate("/dashboard/enrolled-courses");
         dispatch(resetCart());
     }   

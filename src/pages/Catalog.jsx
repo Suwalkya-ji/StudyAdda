@@ -3,7 +3,7 @@ import Footer from '../component/common/Footer'
 import { useParams } from 'react-router-dom'
 import { apiConnector } from '../services/apiconnector';
 import { categories } from '../services/api';
-import { getCatalogaPageData } from '../services/operations/pageAndComponentData';
+import { getCatalogPageData } from '../services/operations/pageAndComponentData';
 import Course_Card from '../component/core/Catalog/Course_Card';
 import CourseSlider from '../component/core/Catalog/CourseSlider';
 import { useSelector } from "react-redux"
@@ -31,7 +31,7 @@ const Catalog = () => {
     useEffect(() => {
         const getCategoryDetails = async() => {
             try{
-                const res = await getCatalogaPageData(categoryId);
+                const res = await getCatalogPageData(categoryId);
                 console.log("PRinting res: ", res);
                 setCatalogPageData(res);
             }
