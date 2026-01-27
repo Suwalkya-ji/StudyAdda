@@ -90,7 +90,7 @@ function SignupForm() {
         <div className="flex gap-x-4">
           <label>
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              First Name <sup className="text-pink-200">*</sup>
+              First Name <sup className="text-pink-400">*</sup>
             </p>
             <input
               required
@@ -107,7 +107,7 @@ function SignupForm() {
           </label>
           <label>
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              Last Name <sup className="text-pink-200">*</sup>
+              Last Name <sup className="text-pink-400">*</sup>
             </p>
             <input
               required
@@ -125,7 +125,7 @@ function SignupForm() {
         </div>
         <label className="w-full">
           <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-            Email Address <sup className="text-pink-200">*</sup>
+            Email Address <sup className="text-pink-400">*</sup>
           </p>
           <input
             required
@@ -143,7 +143,7 @@ function SignupForm() {
         <div className="flex gap-x-4">
           <label className="relative">
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              Create Password <sup className="text-pink-200">*</sup>
+              Create Password <sup className="text-pink-400">*</sup>
             </p>
             <input
               required
@@ -170,7 +170,7 @@ function SignupForm() {
           </label>
           <label className="relative">
             <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-              Confirm Password <sup className="text-pink-200">*</sup>
+              Confirm Password <sup className="text-pink-400">*</sup>
             </p>
             <input
               required
@@ -198,7 +198,7 @@ function SignupForm() {
         </div>
         <button
           type="submit"
-          className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
+          className="mt-6 rounded-[8px] bg-yellow-300 py-[8px] px-[12px] font-medium text-richblack-900"
         >
           Create Account
         </button>

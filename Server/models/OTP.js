@@ -92,7 +92,12 @@ OTPSchema.pre("save", async function (next) {
     await sendVerificationEmail(this.email, this.otp);
   }
 
- // next(); // important
+ next; // important
 });
 
-module.exports = mongoose.model("OTP", OTPSchema);
+
+const OTP = mongoose.model("OTP", OTPSchema);
+
+module.exports = OTP;
+
+// module.exports = mongoose.model("OTP", OTPSchema);

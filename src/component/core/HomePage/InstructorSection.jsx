@@ -31,7 +31,7 @@ const InstructorSection = () => {
 
                         <div className='w-fit'>
                                 <CTAButton active={true} linkto={"/signup"}>
-                                    <div className='flex  gap-2 items-center'>
+                                    <div className='flex gap-3 items-center'>
                                             Start Teaching Today
                                             <FaArrowRight/>
                                     </div>

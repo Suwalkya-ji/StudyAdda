@@ -1,25 +1,28 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+// Icons Import
 import { FaArrowRight } from "react-icons/fa";
-import HighlightText from '../component/core/HomePage/HighlightText';
+import { Link } from 'react-router-dom'
 
-import CTAButton from '../component/core/HomePage/Button';
+// Image and Video Import
 import Banner from "../assets/Images/banner.mp4"
+// Component Imports
+import Footer from '../component/common/Footer';
+import ReviewSlider from '../component/common/ReviewSlider';
+import CTAButton from '../component/core/HomePage/Button';
 import CodeBlocks from '../component/core/HomePage/CodeBlocks';
+import ExploreMore from '../component/core/HomePage/ExploreMore';
+import HighlightText from '../component/core/HomePage/HighlightText';
+import InstructorSection from "../component/core/HomePage/InstructorSection"
 import LearningLanguageSection from "../component/core/HomePage/LearningLanguageSection"
 import TimelineSection from '../component/core/HomePage/TimelineSection';
 
-import InstructorSection from "../component/core/HomePage/InstructorSection"
-import Footer from '../component/common/Footer';
-import ExploreMore from '../component/core/HomePage/ExploreMore';
 
 const Home = () => {
   return (
     <div>
         
-                {/* Section 1 */}
+     {/* Section 1 */}
     <div className='relative mx-auto flex flex-col w-11/12 max-w-maxContent items-center
-    text-white justify-between gap-8 '>
+    text-white justify-between gap-8 px-4 sm:px-6 lg:px-0'>
 
         {/* Become a Instructor Button */}
             <Link to={"/signup"}>
@@ -36,13 +39,13 @@ const Home = () => {
             </Link>
 
         {/* Heading */}
-            <div className='text-center text-4xl font-semibold'>
+            <div className='text-center text-2xl sm:text-3xl lg:text-4xl font-semibold'>
                   Empower Your Future with
                   <HighlightText text={"Coding Skills"} />
             </div>
 
         {/* Sub Heading */}
-            <div className='-mt-3 w-[90%] text-center text-lg font-bold text-richblack-300'>
+            <div className='-mt-2 w-[90%] text-center text-sm sm:text-base lg:text-lg font-bold text-richblack-300'>
                 With our online coding courses, you can learn at your own pace, from
                 anywhere in the world, and get access to a wealth of resources,
                 including hands-on projects, quizzes, and personalized feedback from
@@ -50,7 +53,7 @@ const Home = () => {
             </div>
 
         {/* CTA Buttons */}
-            <div className='flex flex-row gap-7 mt-8'>
+            <div className='flex flex-col sm:flex-row gap-4 sm:gap-7 mt-8'>
                 
                 <CTAButton active={true} linkto={"/signup"}>
                     Learn More
@@ -63,10 +66,10 @@ const Home = () => {
             </div>
 
         {/* Video */}
-            <div className= 'mx-3 my-7 shadow-[10px_-5px_50px_-5px] shadow-blue-200'>
+            <div className= 'mx-3 my-7 w-full max-w-[900px] overflow-hidden rounded-lg shadow-[10px_-5px_50px_-5px] shadow-blue-200'>
 
                 <video
-                className="shadow-[20px_20px_rgba(255,255,255)]"
+                className="w-full rounded-lg object-cover shadow-[20px_20px_rgba(255,255,255)]"
                 muted
                 loop
                 autoPlay>
@@ -80,7 +83,7 @@ const Home = () => {
                 <CodeBlocks 
                     position={"lg:flex-row"}
                     heading={
-                        <div className='text-4xl font-semibold '>
+                        <div className='text-2xl sm:text-3xl lg:text-4xl font-semibold'>
                             Unlock Your
                             <HighlightText text={"coding potential"} /> with our online courses.
                         </div>    
@@ -95,17 +98,16 @@ const Home = () => {
                          btnText: "Try it Yourself",
                          linkto: "/signup",
                          active: true,
-                       } 
-                    }
+                       } }
 
                     ctabtn2={
                        {
                          btnText: "Learn More",
                          linkto: "/signup",
                          active: false,
-                       } 
-                    }
-
+                       } }
+                    
+                    codeColor={"text-yellow-300"}
                     codeblock={`<!DOCTYPE html>
                     <html lang="en">
                     <head>
@@ -116,7 +118,6 @@ const Home = () => {
                     <body>
                     </body>
                     </html> `}
-                    codeColor={"text-yellow-25"}
                     backgroundGradient={<div className="codeblock1 absolute"> </div>}
 
                 />
@@ -127,7 +128,7 @@ const Home = () => {
           <CodeBlocks
             position={"lg:flex-row-reverse"}
             heading={
-              <div className="w-[100%] text-4xl font-semibold lg:w-[50%]">
+              <div className="w-[100%] text-2xl sm:text-3xl lg:text-4xl font-semibold lg:w-[50%]">
                 Start
                 <HighlightText text={"coding in seconds"} />
               </div>
@@ -166,7 +167,7 @@ const Home = () => {
             <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-8 mx-auto'>
                         <div className='lg:h-[150px]'></div>
                     
-                    <div className='flex flex-row gap-7 text-white lg:mt-8'>
+                    <div className='flex flex-col sm:flex-row gap-4 sm:gap-7 text-white lg:mt-8'>
                         <CTAButton active={true} linkto={"/signup"} >
                                 <div className='flex items-center gap-3'>
                                     Explore Full Catalog
@@ -174,23 +175,20 @@ const Home = () => {
                                 </div>
                         </CTAButton>
 
-                        <CTAButton active={false} linkto={"/login"} >
-                                <div>
+                        <CTAButton active={false} linkto={"/login"} >        
                                     Learn more
-                                </div>
                         </CTAButton>
                     </div>
-
             </div>
-
         </div>
 
         <div className='mx-auto w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-8'>
             
           {/* Job that is in Demand - Section 1 */}
-            <div className='flex flex-col justify-between gap-7  mb-10 mt-[-100px]  lg:mt-20 lg:flex-row lg:gap-0'>
-                <div className='text-4xl font-semibold lg:w-[45%]'>
-                    Get the Skills you need for a
+            <div className='flex flex-col justify-between gap-7 mb-10 
+mt-[-40px] sm:mt-[-70px] lg:mt-20 lg:flex-row lg:gap-0'>
+                <div className='text-2xl sm:text-3xl lg:text-4xl font-semibold lg:w-[45%]'>
+                    Get the Skills you need for a{" "}
                     <HighlightText text={"Job that is in demand"}/>
                 </div>
 
@@ -222,20 +220,24 @@ const Home = () => {
 
 
                 {/* Section 3 */}
-    <div className=' relative w-11/12 mx-auto max-w-maxContent flex flex-col items-center justify-between gap-8  bg-richblack-900 text-white'>
+    <div className='relative w-11/12 mx-auto max-w-maxContent flex flex-col
+items-center justify-between gap-8 bg-richblack-900 text-white
+px-4 sm:px-6 lg:px-0'>
 
         {/* Become a instructor section */}
             <InstructorSection/>
 
-            <h2 className='text-center text-4xl font-semibold mt-8'>
-                Review from other Learners</h2>
-                {/* Review slider */}
+            <h1 className='text-center text-2xl sm:text-3xl lg:text-4xl font-semibold mt-8'>
+                Review from other Learners
+            </h1>
+
+        {/* Review slider */}
+        <ReviewSlider/>
 
     </div>  
 
 
-                {/* Footer */}
-
+    {/* Footer */}
     <Footer/>
 
 

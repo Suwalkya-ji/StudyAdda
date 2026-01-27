@@ -105,7 +105,7 @@ export default function CourseBuilderForm() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="flex flex-col space-y-2">
           <label className="text-sm text-richblack-5" htmlFor="sectionName">
-            Section Name <sup className="text-pink-200">*</sup>
+            Section Name <sup className="text-pink-400">*</sup>
           </label>
           <input
             id="sectionName"
@@ -115,7 +115,7 @@ export default function CourseBuilderForm() {
             className="form-style w-full"
           />
           {errors.sectionName && (
-            <span className="ml-2 text-xs tracking-wide text-pink-200">
+            <span className="ml-2 text-xs tracking-wide text-pink-400">
               Section name is required
             </span>
           )}
@@ -127,7 +127,7 @@ export default function CourseBuilderForm() {
             text={editSectionName ? "Edit Section Name" : "Create Section"}
             outline={true}
           >
-            <IoAddCircleOutline size={20} className="text-yellow-50" />
+            <IoAddCircleOutline size={20} className="text-yellow-300" />
           </IconBtn>
           {editSectionName && (
             <button

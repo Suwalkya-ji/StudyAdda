@@ -1,3 +1,4 @@
+import "./index.css";
 import "./App.css";
 import {Route, Routes, useNavigate } from "react-router-dom";
 import Home from "./pages/Home"
@@ -25,6 +26,10 @@ import MyCourses from "./component/core/Dashboard/MyCourses"
 import EditCourse from './component/core/Dashboard/EditCourse'
 import Catalog from './pages/Catalog'
 import CourseDetails from "./pages/CourseDetails";
+import ViewCourse from "./pages/ViewCourse";
+import VideoDetails from "./component/core/ViewCourse/VideoDetails";
+import Instructor from "./component/core/Dashboard/InstructorDashboard/Instructor";
+
 
 
 function App() {
@@ -89,7 +94,7 @@ function App() {
         />  
 
     <Route
-          path="about"
+          path="/about"
           element={
             <OpenRoute>
               <About />
@@ -122,6 +127,7 @@ function App() {
       {
         user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
           <>
+          <Route path="dashboard/instructor" element={<Instructor />} />
           <Route path="dashboard/add-course" element={<AddCourse />} />
           <Route path="dashboard/my-courses" element={<MyCourses />} />
           <Route path="dashboard/edit-course/:courseId" element={<EditCourse />} />
@@ -131,6 +137,25 @@ function App() {
 
 
     </Route>
+
+      <Route element={
+        <PrivateRoute>
+          <ViewCourse />
+        </PrivateRoute>
+      }>
+
+      {
+        user?.accountType === ACCOUNT_TYPE.STUDENT && (
+          <>
+          <Route 
+            path="view-course/:courseId/section/:sectionId/sub-section/:subSectionId"
+            element={<VideoDetails />}
+          />
+          </>
+        )
+      }
+
+      </Route>
 
         <Route path="*" element={<Error />} />
 

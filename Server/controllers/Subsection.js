@@ -1,7 +1,7 @@
 // Import necessary modules
 const Section = require("../models/Section");
 const SubSection = require("../models/SubSection");
-const { uploadImageToCloudinary } = require("../utils/imageUploader");
+const { uploadImageToCloudinary, uploadVideoToCloudinary } = require("../utils/imageUploader");
 
 // Create a new sub-section for a given section
 exports.createSubSection = async (req, res) => {
@@ -19,7 +19,7 @@ exports.createSubSection = async (req, res) => {
       console.log(video)
   
       // Upload the video file to Cloudinary
-      const uploadDetails = await uploadImageToCloudinary(
+      const uploadDetails = await uploadVideoToCloudinary(
         video,
         process.env.FOLDER_NAME
       )
@@ -52,7 +52,7 @@ exports.createSubSection = async (req, res) => {
     }
   }
   
-  exports.updateSubSection = async (req, res) => {
+exports.updateSubSection = async (req, res) => {
     try {
       const { sectionId,subSectionId, title, description } = req.body
       const subSection = await SubSection.findById(subSectionId)
@@ -73,7 +73,7 @@ exports.createSubSection = async (req, res) => {
       }
       if (req.files && req.files.video !== undefined) {
         const video = req.files.video
-        const uploadDetails = await uploadImageToCloudinary(
+        const uploadDetails = await uploadVideoToCloudinary(
           video,
           process.env.FOLDER_NAME
         )
@@ -83,8 +83,12 @@ exports.createSubSection = async (req, res) => {
   
       await subSection.save()
   
-      const updatedSection = await Section.findById(sectionId).populate("subSection")
+    // find updated section and return it
+      const updatedSection = await Section.findById(sectionId).populate(
+        "subSection"
+      )
 
+       console.log("updated section", updatedSection)
 
       return res.json({
         success: true,
@@ -100,7 +104,7 @@ exports.createSubSection = async (req, res) => {
     }
   }
   
-  exports.deleteSubSection = async (req, res) => {
+exports.deleteSubSection = async (req, res) => {
     try {
       const { subSectionId, sectionId } = req.body
       await Section.findByIdAndUpdate(
@@ -119,7 +123,10 @@ exports.createSubSection = async (req, res) => {
           .json({ success: false, message: "SubSection not found" })
       }
 
-      const updatedSection = await Section.findById(sectionId).populate("subSection")
+    // find updated section and return it
+      const updatedSection = await Section.findById(sectionId).populate(
+        "subSection"
+      )
   
       return res.json({
         success: true,

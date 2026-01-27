@@ -42,7 +42,7 @@ export default function RequirementsField({
   return (
     <div className="flex flex-col space-y-2">
       <label className="text-sm text-richblack-5" htmlFor={name}>
-        {label} <sup className="text-pink-200">*</sup>
+        {label} <sup className="text-pink-400">*</sup>
       </label>
       <div className="flex flex-col items-start space-y-2">
         <input
@@ -55,7 +55,7 @@ export default function RequirementsField({
         <button
           type="button"
           onClick={handleAddRequirement}
-          className="font-semibold text-yellow-50"
+          className="font-semibold text-yellow-300"
         >
           Add
         </button>
@@ -77,7 +77,7 @@ export default function RequirementsField({
         </ul>
       )}
       {errors[name] && (
-        <span className="ml-2 text-xs tracking-wide text-pink-200">
+        <span className="ml-2 text-xs tracking-wide text-pink-400">
           {label} is required
         </span>
       )}

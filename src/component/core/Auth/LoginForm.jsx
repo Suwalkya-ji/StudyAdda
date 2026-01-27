@@ -36,7 +36,7 @@ function LoginForm() {
     >
       <label className="w-full">
         <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-          Email Address <sup className="text-pink-200">*</sup>
+          Email Address <sup className="text-pink-400">*</sup>
         </p>
         <input
           required
@@ -53,7 +53,7 @@ function LoginForm() {
       </label>
       <label className="relative">
         <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-          Password <sup className="text-pink-200">*</sup>
+          Password <sup className="text-pink-400">*</sup>
         </p>
         <input
           required
@@ -78,14 +78,14 @@ function LoginForm() {
           )}
         </span>
         <Link to="/forgot-password">
-          <p className="mt-1 ml-auto max-w-max text-xs text-blue-100">
+          <p className="mt-1 ml-auto max-w-max text-xs text-blue-300">
             Forgot Password
           </p>
         </Link>
       </label>
       <button
         type="submit"
-        className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
+        className="mt-6 rounded-[8px] bg-yellow-300 py-[8px] px-[12px] font-medium text-richblack-900"
       >
         Sign In
       </button>

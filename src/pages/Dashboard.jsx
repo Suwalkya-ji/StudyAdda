@@ -10,18 +10,24 @@ const Dashboard = () => {
 
     if(authLoading || profileLoading) {
         return(
-            <div className='grid min-h-[calc(100vh-3.rem)] place-items-center'>
+            <div className='grid min-h-[calc(100vh-3.5rem)] place-items-center'>
                 <div className='spinner'></div>                
             </div>
         )
     }
 
   return (
-    <div className='  relative flex min-h-[calc(100vh-3.5rem)]'>
-        <Sidebar />
+    <div className='  relative flex min-h-[calc(100vh-3.5rem)] flex-col lg:flex-row'>
+       
+        <div className='hidden lg:block'>
+            <Sidebar />
+        </div>
+
 
         <div className='h-[clac(100vh-3.5rem)] flex-1 overflow-auto'>
-            <div className='mx-auto w-11/12 max-w-[1000px] py-10'>
+            
+            <div className='mx-auto w-11/12 px-4 sm:px-6 lg:px-0 
+                max-w-[1000px] py-6 sm:py-10'>
                 <Outlet/>
             </div>
 

@@ -7,7 +7,14 @@ import { TypeAnimation } from 'react-type-animation';
 
 
 const CodeBlocks = ({
-    position, heading, subheading, ctabtn1, ctabtn2, codeblock, backgroundGradient, codeColor
+    position,
+    heading,
+    subheading,
+    ctabtn1,
+    ctabtn2,
+    codeblock,
+    backgroundGradient,
+    codeColor,
 }) => {
   return (
     <div className={`flex ${position} my-20 justify-between flex-col lg:gap-10 gap-10 `}>
@@ -43,7 +50,7 @@ const CodeBlocks = ({
 
                         {backgroundGradient}
                         {/* Indexing */}
-                        <div className='text-center flex flex-col w-[10%] text-richblack-400 font-inter font-bold'> 
+                        <div className='text-center flex flex-col w-[10%] select-none text-richblack-400 font-inter font-bold'> 
                             <p>1</p>
                             <p>2</p>
                             <p>3</p>

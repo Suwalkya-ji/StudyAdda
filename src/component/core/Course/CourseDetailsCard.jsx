@@ -57,7 +57,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
         <img
           src={ThumbnailImage}
           alt={course?.courseName}
-          className="max-h-[300px] min-h-[180px] w-[400px] overflow-hidden rounded-2xl object-cover md:max-w-full"
+          className="max-h-[300px] min-h-[180px] w-full overflow-hidden rounded-2xl object-cover md:max-w-full"
         />
 
         <div className="px-4">
@@ -66,7 +66,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
           </div>
           <div className="flex flex-col gap-4">
             <button
-              className="yellowButton"
+              className="w-full justify-center rounded-md bg-yellow-300 px-6 py-3 text-center text-[13px] font-bold text-richblack-900 shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] transition-all duration-200 hover:scale-95 hover:shadow-none sm:text-[16px]"
               onClick={
                 user && course?.studentsEnrolled.includes(user?._id)
                   ? () => navigate("/dashboard/enrolled-courses")
@@ -78,7 +78,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
                 : "Buy Now"}
             </button>
             {(!user || !course?.studentsEnrolled.includes(user?._id)) && (
-              <button onClick={handleAddToCart} className="blackButton">
+              <button onClick={handleAddToCart} className="w-full justify-center rounded-md bg-richblack-800 px-6 py-3 text-center text-[13px] font-bold text-richblack-5 shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] transition-all duration-200 hover:scale-95 hover:shadow-none sm:text-[16px]">
                 Add to Cart
               </button>
             )}
@@ -96,7 +96,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
             <div className="flex flex-col gap-3 text-sm text-caribbeangreen-100">
               {course?.instructions?.map((item, i) => {
                 return (
-                  <p className={`flex gap-2`} key={i}>
+                  <p className={`flex items-center gap-2`} key={i}>
                     <BsFillCaretRightFill />
                     <span>{item}</span>
                   </p>
@@ -106,7 +106,7 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
           </div>
           <div className="text-center">
             <button
-              className="mx-auto flex items-center gap-2 py-6 text-yellow-300 "
+              className="mx-auto flex items-center gap-2 py-6 text-yellow-300 cursor-pointer transition-all duration-200 hover:scale-95"
               onClick={handleShare}
             >
               <FaShareSquare size={15} /> Share

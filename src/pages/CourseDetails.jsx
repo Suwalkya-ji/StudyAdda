@@ -129,14 +129,17 @@ function CourseDetails() {
     <>
       <div className={`relative w-full bg-richblack-800`}>
         {/* Hero Section */}
-        <div className="mx-auto box-content px-4 lg:w-[1260px] 2xl:relative ">
-          <div className="mx-auto grid min-h-[450px] max-w-maxContentTab justify-items-center py-8 lg:mx-0 lg:justify-items-start lg:py-0 xl:max-w-[810px]">
+        <div className="mx-auto w-full max-w-[1260px] px-4 2xl:relative">
+          <div className="mx-auto grid min-h-[auto] gap-6 py-8 
+                sm:py-10 
+                lg:mx-0 lg:py-0 
+                xl:max-w-[810px]">
             <div className="relative block max-h-[30rem] lg:hidden">
               <div className="absolute bottom-0 left-0 h-full w-full shadow-[#161D29_0px_-64px_36px_-28px_inset]"></div>
               <img
                 src={thumbnail}
                 alt="course thumbnail"
-                className="aspect-auto w-full"
+                className="w-full rounded-lg object-cover"
               />
             </div>
             <div
@@ -149,7 +152,7 @@ function CourseDetails() {
               </div>
               <p className={`text-richblack-200`}>{courseDescription}</p>
               <div className="text-md flex flex-wrap items-center gap-2">
-                <span className="text-yellow-25">{avgReviewCount}</span>
+                <span className="text-yellow-300">{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
                 <span>{`(${ratingAndReviews.length} reviews)`}</span>
                 <span>{`${studentsEnrolled.length} students enrolled`}</span>
@@ -170,18 +173,21 @@ function CourseDetails() {
                 </p>
               </div>
             </div>
-            <div className="flex w-full flex-col gap-4 border-y border-y-richblack-500 py-4 lg:hidden">
+            <div className="flex w-full flex-col gap-4 border-y border-richblack-500 py-6 lg:hidden">
               <p className="space-x-3 pb-4 text-3xl font-semibold text-richblack-5">
                 Rs. {price}
               </p>
-              <button className="yellowButton" onClick={handleBuyCourse}>
+              <button className="w-full justify-center rounded-md bg-yellow-300 px-6 py-3 text-center text-[13px] font-bold text-richblack-900 shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] transition-all duration-200 hover:scale-95 hover:shadow-none sm:text-[16px]" onClick={handleBuyCourse}>
                 Buy Now
               </button>
-              <button className="blackButton">Add to Cart</button>
+              <button className="w-full justify-center rounded-md bg-richblack-800 px-6 py-3 text-center text-[13px] font-bold text-richblack-5 shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] transition-all duration-200 hover:scale-95 hover:shadow-none sm:text-[16px]">Add to Cart</button>
             </div>
           </div>
+
           {/* Courses Card */}
-          <div className="right-[1rem] top-[60px] mx-auto hidden min-h-[600px] w-1/3 max-w-[410px] translate-y-24 md:translate-y-0 lg:absolute  lg:block">
+          <div className="mx-auto hidden w-full max-w-[410px] 
+                lg:absolute lg:right-4 lg:top-[60px] 
+                lg:block">
             <CourseDetailsCard
               course={response?.data?.courseDetails}
               setConfirmationModal={setConfirmationModal}
@@ -201,10 +207,10 @@ function CourseDetails() {
           </div>
 
           {/* Course Content Section */}
-          <div className="max-w-[830px] ">
+          <div className="w-full max-w-[830px]">
             <div className="flex flex-col gap-3">
               <p className="text-[28px] font-semibold">Course Content</p>
-              <div className="flex flex-wrap justify-between gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row sm:justify-between ">
                 <div className="flex gap-2">
                   <span>
                     {courseContent.length} {`section(s)`}
@@ -216,7 +222,7 @@ function CourseDetails() {
                 </div>
                 <div>
                   <button
-                    className="text-yellow-25"
+                    className="text-yellow-300"
                     onClick={() => setIsActive([])}
                   >
                     Collapse all sections
@@ -240,7 +246,7 @@ function CourseDetails() {
             {/* Author Details */}
             <div className="mb-12 py-4">
               <p className="text-[28px] font-semibold">Author</p>
-              <div className="flex items-center gap-4 py-4">
+              <div className="flex flex-col items-start gap-4 py-4 sm:flex-row sm:items-center">
                 <img
                   src={
                     instructor.image

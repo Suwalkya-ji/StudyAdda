@@ -154,7 +154,7 @@ export default function SubSectionModal({
           {/* Lecture Title */}
           <div className="flex flex-col space-y-2">
             <label className="text-sm text-richblack-5" htmlFor="lectureTitle">
-              Lecture Title {!view && <sup className="text-pink-200">*</sup>}
+              Lecture Title {!view && <sup className="text-pink-400">*</sup>}
             </label>
             <input
               disabled={view || loading}
@@ -164,7 +164,7 @@ export default function SubSectionModal({
               className="form-style w-full"
             />
             {errors.lectureTitle && (
-              <span className="ml-2 text-xs tracking-wide text-pink-200">
+              <span className="ml-2 text-xs tracking-wide text-pink-400">
                 Lecture title is required
               </span>
             )}
@@ -173,7 +173,7 @@ export default function SubSectionModal({
           <div className="flex flex-col space-y-2">
             <label className="text-sm text-richblack-5" htmlFor="lectureDesc">
               Lecture Description{" "}
-              {!view && <sup className="text-pink-200">*</sup>}
+              {!view && <sup className="text-pink-400">*</sup>}
             </label>
             <textarea
               disabled={view || loading}
@@ -183,7 +183,7 @@ export default function SubSectionModal({
               className="form-style resize-x-none min-h-[130px] w-full"
             />
             {errors.lectureDesc && (
-              <span className="ml-2 text-xs tracking-wide text-pink-200">
+              <span className="ml-2 text-xs tracking-wide text-pink-400">
                 Lecture Description is required
               </span>
             )}

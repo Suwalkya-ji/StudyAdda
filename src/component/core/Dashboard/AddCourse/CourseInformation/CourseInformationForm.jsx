@@ -164,7 +164,7 @@ export default function CourseInformationForm() {
       {/* Course Title */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseTitle">
-          Course Title <sup className="text-pink-200">*</sup>
+          Course Title <sup className="text-pink-400">*</sup>
         </label>
         <input
           id="courseTitle"
@@ -173,7 +173,7 @@ export default function CourseInformationForm() {
           className="form-style w-full"
         />
         {errors.courseTitle && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
+          <span className="ml-2 text-xs tracking-wide text-pink-400">
             Course title is required
           </span>
         )}
@@ -181,7 +181,7 @@ export default function CourseInformationForm() {
       {/* Course Short Description */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseShortDesc">
-          Course Short Description <sup className="text-pink-200">*</sup>
+          Course Short Description <sup className="text-pink-400">*</sup>
         </label>
         <textarea
           id="courseShortDesc"
@@ -190,7 +190,7 @@ export default function CourseInformationForm() {
           className="form-style resize-x-none min-h-[130px] w-full"
         />
         {errors.courseShortDesc && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
+          <span className="ml-2 text-xs tracking-wide text-pink-400">
             Course Description is required
           </span>
         )}
@@ -198,7 +198,7 @@ export default function CourseInformationForm() {
       {/* Course Price */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="coursePrice">
-          Course Price <sup className="text-pink-200">*</sup>
+          Course Price <sup className="text-pink-400">*</sup>
         </label>
         <div className="relative">
           <input
@@ -216,7 +216,7 @@ export default function CourseInformationForm() {
           <HiOutlineCurrencyRupee className="absolute left-3 top-1/2 inline-block -translate-y-1/2 text-2xl text-richblack-400" />
         </div>
         {errors.coursePrice && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
+          <span className="ml-2 text-xs tracking-wide text-pink-400">
             Course Price is required
           </span>
         )}
@@ -224,7 +224,7 @@ export default function CourseInformationForm() {
       {/* Course Category */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseCategory">
-          Course Category <sup className="text-pink-200">*</sup>
+          Course Category <sup className="text-pink-400">*</sup>
         </label>
         <select
           {...register("courseCategory", { required: true })}
@@ -243,7 +243,7 @@ export default function CourseInformationForm() {
             ))}
         </select>
         {errors.courseCategory && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
+          <span className="ml-2 text-xs tracking-wide text-pink-400">
             Course Category is required
           </span>
         )}
@@ -270,7 +270,7 @@ export default function CourseInformationForm() {
       {/* Benefits of the course */}
       <div className="flex flex-col space-y-2">
         <label className="text-sm text-richblack-5" htmlFor="courseBenefits">
-          Benefits of the course <sup className="text-pink-200">*</sup>
+          Benefits of the course <sup className="text-pink-400">*</sup>
         </label>
         <textarea
           id="courseBenefits"
@@ -279,7 +279,7 @@ export default function CourseInformationForm() {
           className="form-style resize-x-none min-h-[130px] w-full"
         />
         {errors.courseBenefits && (
-          <span className="ml-2 text-xs tracking-wide text-pink-200">
+          <span className="ml-2 text-xs tracking-wide text-pink-400">
             Benefits of the course is required
           </span>
         )}

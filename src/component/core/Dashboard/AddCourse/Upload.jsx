@@ -74,7 +74,7 @@ useEffect(() => {
   return (
     <div className="flex flex-col space-y-2">
       <label className="text-sm text-richblack-5" htmlFor={name}>
-        {label} {!viewData && <sup className="text-pink-200">*</sup>}
+        {label} {!viewData && <sup className="text-pink-400">*</sup>}
       </label>
 
       <div
@@ -127,12 +127,12 @@ useEffect(() => {
 
 
             <div className="grid aspect-square w-14 place-items-center rounded-full bg-pure-greys-800">
-              <FiUploadCloud className="text-2xl text-yellow-50" />
+              <FiUploadCloud className="text-2xl text-yellow-300" />
             </div>
 
             <p className="mt-2 max-w-[200px] text-center text-sm text-richblack-200">
               Drag and drop an {!video ? "image" : "video"}, or click to{" "}
-              <span className="font-semibold text-yellow-50">Browse</span> a
+              <span className="font-semibold text-yellow-300">Browse</span> a
               file
             </p>
 
@@ -145,7 +145,7 @@ useEffect(() => {
       </div>
 
       {errors[name] && (
-        <span className="ml-2 text-xs tracking-wide text-pink-200">
+        <span className="ml-2 text-xs tracking-wide text-pink-400">
           {label} is required
         </span>
       )}

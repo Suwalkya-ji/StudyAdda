@@ -34,7 +34,7 @@ exports.createRating = async(req,res) => {
                 });
 
                 if(alreadyReviewed) {
-                    return res.status(4033).json({
+                    return res.status(403).json({
                         success:false,
                         message:'Course is already reviewed by the user',
                     });
@@ -53,7 +53,7 @@ exports.createRating = async(req,res) => {
         const updatedCourseDetails =  await Course.findByIdAndUpdate({_id:courseId},
                 {
                     $push:{
-                        ratingAndReviews:ratingReview._id,
+                        ratingAndReviews: ratingReview._id,
                     }
                 },
                 {new:true});
@@ -96,7 +96,7 @@ exports.getAverageRating = async (req, res) => {
             {
                 $group:{
                     _id:null, // saari rating ko ek single group me wrap kar diya
-                    averageRating : {$avg: "$rating"}
+                    averageRating : {$avg: "$rating"},
                 }
             }
 
@@ -106,7 +106,7 @@ exports.getAverageRating = async (req, res) => {
         if(result.length > 0) {
             return res.status(200).json({
                 success:true,
-                averageRating: rating[0].averageRating,
+                averageRating: result[0].averageRating,
             })
         }
 
