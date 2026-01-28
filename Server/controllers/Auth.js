@@ -30,6 +30,7 @@ exports.signup = async (req, res) => {
 			!password ||
 			!confirmPassword ||
 			!otp
+			// !contactNumber // contactNumber is not mandatory
 		) {
 			return res.status(403).send({
 				success: false,
@@ -75,15 +76,12 @@ exports.signup = async (req, res) => {
 		const hashedPassword = await bcrypt.hash(password, 10);
 
 		// Create the user
-		let approved = "";
-		accountType === "Instructor" ? (approved = false) : (approved = true);
-
 		// Create the Additional Profile For User
 		const profileDetails = await Profile.create({
 			gender: null,
 			dateOfBirth: null,
 			about: null,
-			contactNumber: null,
+			contactNumber: contactNumber,
 		});
 		const user = await User.create({
 			firstName,
@@ -92,7 +90,7 @@ exports.signup = async (req, res) => {
 			contactNumber,
 			password: hashedPassword,
 			accountType: accountType,
-			approved: approved,
+			approved: accountType !== "Instructor",
 			additionalDetails: profileDetails._id,
 			image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
 		});
