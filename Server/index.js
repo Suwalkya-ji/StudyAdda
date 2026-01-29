@@ -22,11 +22,15 @@ database.connect();
 
 // middlewares
 app.use(
-        cors({
-        origin: process.env.FRONTEND_URL || "http://localhost:5173",
-        credentials: true,
-    })
-)
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://studyadda-v4ff.onrender.com"
+    ],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(cookieParser());
 
