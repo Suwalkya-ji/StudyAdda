@@ -179,73 +179,51 @@ exports.login = async (req, res) => {
 // Send OTP For Email Verification
 exports.sendotp = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email } = req.body
 
-    if (!email) {
-      return res.status(400).json({
-        success: false,
-        message: "Email is required",
-      });
-    }
+    // Check if user is already present
+    // Find user with provided email
+    const checkUserPresent = await User.findOne({ email })
+    // to be used in case of signup
 
-    // Check if user already exists
-    const checkUserPresent = await User.findOne({ email });
+    // If user found with provided email
     if (checkUserPresent) {
+      // Return 401 Unauthorized status code with error message
       return res.status(401).json({
         success: false,
-        message: "User is Already Registered",
-      });
+        message: `User is Already Registered`,
+      })
     }
 
-    // Generate unique OTP
-    let otp;
-    let otpExists = true;
-
-    while (otpExists) {
+    var otp = otpGenerator.generate(6, {
+      upperCaseAlphabets: false,
+      lowerCaseAlphabets: false,
+      specialChars: false,
+    })
+    const result = await OTP.findOne({ otp: otp })
+    console.log("Result is Generate OTP Func")
+    console.log("OTP", otp)
+    console.log("Result", result)
+    while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
-        lowerCaseAlphabets: false,
-        specialChars: false,
-      });
-
-      otpExists = await OTP.findOne({ otp });
+      })
     }
-
-    // Save OTP in DB
-    await OTP.create({ email, otp });
-
-    // 🔥 SEND OTP EMAIL (THIS WAS MISSING)
-    try {
-      await mailSender(
-        email,
-        "Your OTP for StudyAdda",
-        `<h2>Your OTP is: ${otp}</h2>`
-      );
-
-      return res.status(200).json({
-        success: true,
-        message: "OTP sent successfully",
-      });
-
-    } catch (mailError) {
-      console.error("MAIL ERROR:", mailError);
-      return res.status(500).json({
-        success: false,
-        message: "Failed to send OTP email",
-      });
-    }
-
+    const otpPayload = { email, otp }
+    const otpBody = await OTP.create(otpPayload)
+    console.log("OTP Body", otpBody)
+    res.status(200).json({
+      success: true,
+      message: `OTP Sent Successfully`,
+      otp,
+    })
   } catch (error) {
-    console.error("SEND OTP ERROR:", error);
-    return res.status(500).json({
-      success: false,
-      message: "Something went wrong",
-    });
+    console.log("otp error -> ",error.message)
+    return res.status(500).json({ success: false, error: error.message })
   }
-};
+}
 
-
-
+// Controller for Changing Password
 exports.changePassword = async (req, res) => {
 	try {
 		// Get user data from req.user

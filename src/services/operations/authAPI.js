@@ -14,65 +14,65 @@ const {
   RESETPASSWORD_API,
 } = endpoints
 
-// export function sendOtp(email, navigate) {
-//   return async (dispatch) => {
-//     const toastId = toast.loading("Loading...")
-//     dispatch(setLoading(true))
-//     try {
-//       console.log("Email sending for OTP:", email)
-//     console.log("SENDOTP_API:", SENDOTP_API)
-
-//       const response = await apiConnector("POST", SENDOTP_API, {
-//         email,
-//         checkUserPresent: true,
-//       })
-//       console.log("SENDOTP API RESPONSE............", response)
-
-//       console.log(response.data.success)
-
-//       if (!response.data.success) {
-//         throw new Error(response.data.message)
-//       }
-
-//       toast.success("OTP Sent Successfully")
-//       navigate("/verify-email")
-//     } catch (error) {
-//       console.log("SENDOTP API ERROR............", error)
-//       toast.error("Could Not Send OTP")
-//     }
-//     dispatch(setLoading(false))
-//     toast.dismiss(toastId)
-//   }
-// }
 export function sendOtp(email, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...")
     dispatch(setLoading(true))
-
     try {
-      const response = await apiConnector("POST", SENDOTP_API, { email })
+      console.log("Email sending for OTP:", email)
+    console.log("SENDOTP_API:", SENDOTP_API)
+
+      const response = await apiConnector("POST", SENDOTP_API, {
+        email,
+        checkUserPresent: true,
+      })
+      console.log("SENDOTP API RESPONSE............", response)
+
+      console.log(response.data.success)
 
       if (!response.data.success) {
         throw new Error(response.data.message)
       }
 
       toast.success("OTP Sent Successfully")
-
-      dispatch(setLoading(false))   // ✅ MOVE HERE
-      toast.dismiss(toastId)
-
-      navigate("/verify-email")     // ✅ AFTER loading cleared
+      navigate("/verify-email")
     } catch (error) {
-      console.log("SENDOTP API ERROR:", error)
-
-      dispatch(setLoading(false))   // ✅ ALWAYS reset
-      toast.dismiss(toastId)
-
-      toast.error(error.response?.data?.message || "Could Not Send OTP")
+      console.log("SENDOTP API ERROR............", error)
+      toast.error("Could Not Send OTP")
     }
+    dispatch(setLoading(false))
+    toast.dismiss(toastId)
   }
 }
 
+// export function sendOtp(email, navigate) {
+//   return async (dispatch) => {
+//     const toastId = toast.loading("Loading...")
+//     dispatch(setLoading(true))
+
+//     try {
+//       const response = await apiConnector("POST", SENDOTP_API, { email })
+
+//       if (!response.data.success) {
+//         throw new Error(response.data.message)
+//       }
+
+//       toast.success("OTP Sent Successfully")
+
+//       dispatch(setLoading(false))   // ✅ MOVE HERE
+//       toast.dismiss(toastId)
+
+//       navigate("/verify-email")     // ✅ AFTER loading cleared
+//     } catch (error) {
+//       console.log("SENDOTP API ERROR:", error)
+
+//       dispatch(setLoading(false))   // ✅ ALWAYS reset
+//       toast.dismiss(toastId)
+
+//       toast.error(error.response?.data?.message || "Could Not Send OTP")
+//     }
+//   }
+// }
 
 export function signUp(
   accountType,
@@ -161,8 +161,6 @@ export function logout(navigate) {
     navigate("/")
   }
 }
-
-
 
 export function getPasswordResetToken(email , setEmailSent) {
   return async(dispatch) => {
