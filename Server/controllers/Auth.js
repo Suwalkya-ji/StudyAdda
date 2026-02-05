@@ -180,6 +180,40 @@ exports.login = async (req, res) => {
 };
 
 // Send OTP For Email Verification
+// exports.sendotp = async (req, res) => {
+//   try {
+//     const { email } = req.body;
+
+//     const checkUserPresent = await User.findOne({ email });
+//     if (checkUserPresent) {
+//       return res.status(401).json({
+//         success: false,
+//         message: "User is Already Registered",
+//       });
+//     }
+
+//     const otp = otpGenerator.generate(6, {
+//       upperCaseAlphabets: false,
+//       lowerCaseAlphabets: false,
+//       specialChars: false,
+//     });
+
+//     await OTP.create({ email, otp });
+
+//     // 🔥 RESPOND IMMEDIATELY
+//     return res.status(200).json({
+//       success: true,
+//       message: "OTP generated successfully",
+//     });
+
+//   } catch (error) {
+//     console.error("otp error -> ", error.message);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Failed to generate OTP",
+//     });
+//   }
+// };
 exports.sendotp = async (req, res) => {
   try {
     const { email } = req.body;
@@ -200,11 +234,24 @@ exports.sendotp = async (req, res) => {
 
     await OTP.create({ email, otp });
 
-    // 🔥 RESPOND IMMEDIATELY
-    return res.status(200).json({
+    // ✅ RESPONSE PEHLE
+    res.status(200).json({
       success: true,
       message: "OTP generated successfully",
     });
+
+    // ✅ MAIL BACKGROUND ME (NO await)
+    mailSender(
+      email,
+      "Your OTP for StuddyAdda",
+      `Your OTP is ${otp}`
+    )
+      .then(() => {
+        console.log("OTP mail sent successfully");
+      })
+      .catch((err) => {
+        console.error("OTP mail error:", err.message);
+      });
 
   } catch (error) {
     console.error("otp error -> ", error.message);
