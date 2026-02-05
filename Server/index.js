@@ -22,17 +22,18 @@ database.connect();
 
 // middlewares
 app.use(
-  cors(
-    {
+  cors({
     origin: [
       "http://localhost:5173",
-      "https://study-adda-delta.vercel.app",
-      "http://127.0.0.1"
+      "http://127.0.0.1",
+      "https://study-adda-mu.vercel.app",   // ✅ LIVE FRONTEND
     ],
     credentials: true,
-  }
-)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
 );
+
 
 
 app.use(express.json());
