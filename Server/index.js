@@ -21,20 +21,15 @@ const PORT = process.env.PORT || 4000;
 database.connect();
 
 // middlewares
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "http://127.0.0.1",
-    //   "https://study-adda-mu.vercel.app",   // ✅ LIVE FRONTEND
-      "https://study-adda-mu.vercel.app/"
-    ],
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+const corsOptions = {
+  origin: "https://study-adda-mu.vercel.app",
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
 
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // 🔥 THIS LINE IS CRITICAL
 
 
 app.use(express.json());
