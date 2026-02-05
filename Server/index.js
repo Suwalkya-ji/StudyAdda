@@ -26,7 +26,8 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://127.0.0.1",
-      "https://study-adda-mu.vercel.app",   // ✅ LIVE FRONTEND
+    //   "https://study-adda-mu.vercel.app",   // ✅ LIVE FRONTEND
+      "https://study-adda-mu.vercel.app/"
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
