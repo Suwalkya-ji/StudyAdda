@@ -34,6 +34,7 @@
     "react-router-dom": "^7.10.1",
     "react-super-responsive-table": "^6.0.2",
     "react-type-animation": "^3.2.0",
+    "streamifier": "^0.1.1",
     "swiper": "^12.0.3",
     "tailwindcss": "^4.1.17"
   },

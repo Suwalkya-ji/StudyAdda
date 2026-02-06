@@ -10,251 +10,264 @@ require("dotenv").config();
 
 // Signup Controller for Registering USers
 exports.signup = async (req, res) => {
-	try {
-		// Destructure fields from the request body
-		const {
-			firstName,
-			lastName,
-			email,
-			password,
-			confirmPassword,
-			accountType,
-			contactNumber,
-			otp,
-		} = req.body;
-		// Check if All Details are there or not
-		if (
-			!firstName ||
-			!lastName ||
-			!email ||
-			!password ||
-			!confirmPassword ||
-			!otp
-			// !contactNumber // contactNumber is not mandatory
-		) {
-			return res.status(403).send({
-				success: false,
-				message: "All Fields are required",
-			});
-		}
-		// Check if password and confirm password match
-		if (password !== confirmPassword) {
-			return res.status(400).json({
-				success: false,
-				message:
-					"Password and Confirm Password do not match. Please try again.",
-			});
-		}
+  try {
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      confirmPassword,
+      accountType = "Student",
+      contactNumber,
+      otp,
+    } = req.body;
 
-		// Check if user already exists
-		const existingUser = await User.findOne({ email });
-		if (existingUser) {
-			return res.status(400).json({
-				success: false,
-				message: "User already exists. Please sign in to continue.",
-			});
-		}
+    // 1. Required fields
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !otp
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All required fields must be provided",
+      });
+    }
 
-		// Find the most recent OTP for the email
-		const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-		console.log(response);
-		if (response.length === 0) {
-			// OTP not found for the email
-			return res.status(400).json({
-				success: false,
-				message: "The OTP is not valid",
-			});
-		} else if (otp !== response[0].otp) {
-			// Invalid OTP
-			return res.status(400).json({
-				success: false,
-				message: "The OTP is not valid",
-			});
-		}
+    // 2. Password match
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "Password and Confirm Password do not match",
+      });
+    }
 
-		// Hash the password
-		const hashedPassword = await bcrypt.hash(password, 10);
+    const normalizedEmail = email.toLowerCase();
 
-		// Create the user
-		// Create the Additional Profile For User
-		const profileDetails = await Profile.create({
-			gender: null,
-			dateOfBirth: null,
-			about: null,
-			contactNumber: contactNumber,
-		});
-		const user = await User.create({
-			firstName,
-			lastName,
-			email,
-			contactNumber,
-			password: hashedPassword,
-			accountType: accountType,
-			approved: accountType !== "Instructor",
-			additionalDetails: profileDetails._id,
-			image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
-		});
+    // 3. Existing user check
+    const existingUser = await User.findOne({ email: normalizedEmail });
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: "User already exists",
+      });
+    }
 
-		return res.status(200).json({
-			success: true,
-			user,
-			message: "User registered successfully",
-		});
-	} catch (error) {
-		console.error(error);
-		return res.status(500).json({
-			success: false,
-			message: "User cannot be registered. Please try again.",
-		});
-	}
+    // 4. OTP validation (latest only)
+    const otpRecord = await OTP.findOne({ email: normalizedEmail })
+      .sort({ createdAt: -1 });
+
+    if (!otpRecord || otpRecord.otp !== otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid OTP",
+      });
+    }
+
+    // 5. OTP expiry (5 minutes)
+    const OTP_EXPIRY = 5 * 60 * 1000;
+    if (Date.now() - otpRecord.createdAt.getTime() > OTP_EXPIRY) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP has expired",
+      });
+    }
+
+    // 6. Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // 7. Create profile
+    const profileDetails = await Profile.create({
+      gender: null,
+      dateOfBirth: null,
+      about: null,
+      contactNumber,
+    });
+
+    // 8. Create user
+    const user = await User.create({
+      firstName,
+      lastName,
+      email: normalizedEmail,
+      contactNumber,
+      password: hashedPassword,
+      accountType: ["Student", "Instructor"].includes(accountType)
+        ? accountType
+        : "Student",
+      approved: accountType !== "Instructor",
+      additionalDetails: profileDetails._id,
+      image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
+    });
+
+    // 9. Consume OTP (IMPORTANT)
+    await OTP.deleteMany({ email: normalizedEmail });
+
+    return res.status(201).json({
+      success: true,
+      message: "User registered successfully",
+    });
+
+  } catch (error) {
+    console.error("SIGNUP ERROR:", error);
+    return res.status(500).json({
+      success: false,
+      message: "User cannot be registered. Please try again later.",
+    });
+  }
 };
 
 // Login controller for authenticating users
 exports.login = async (req, res) => {
-	try {
-		// Get email and password from request body
-		const { email, password } = req.body;
-
-		// Check if email or password is missing
-		if (!email || !password) {
-			// Return 400 Bad Request status code with error message
-			return res.status(400).json({
-				success: false,
-				message: `Please Fill up All the Required Fields`,
-			});
-		}
-
-		// Find user with provided email
-		const user = await User.findOne({ email }).populate("additionalDetails");
-
-		// If user not found with provided email
-		if (!user) {
-			// Return 401 Unauthorized status code with error message
-			return res.status(401).json({
-				success: false,
-				message: `User is not Registered with Us Please SignUp to Continue`,
-			});
-		}
-
-		// Generate JWT token and Compare Password
-		if (await bcrypt.compare(password, user.password)) {
-			const token = jwt.sign(
-				{ email: user.email, id: user._id, accountType: user.accountType },
-				process.env.JWT_SECRET,
-				{
-					expiresIn: "24h",
-				}
-			);
-
-			// Save token to user document in database
-			user.token = token;
-			user.password = undefined;
-			// Set cookie for token and return success response
-			const options = {
-				expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-				httpOnly: true,
-				secure: true,        // 🔥 REQUIRED (HTTPS)
-				sameSite: "none",    // 🔥 REQUIRED (cross-site)
-			};
-
-			res.cookie("token", token, options).status(200).json({
-				success: true,
-				token,
-				user,
-				message: `User Login Success`,
-			});
-		} else {
-			return res.status(401).json({
-				success: false,
-				message: `Password is incorrect`,
-			});
-		}
-	} catch (error) {
-		console.error(error);
-		// Return 500 Internal Server Error status code with error message
-		return res.status(500).json({
-			success: false,
-			message: `Login Failure Please Try Again`,
-		});
-	}
-};
-
-// Send OTP For Email Verification
-// exports.sendotp = async (req, res) => {
-//   try {
-//     const { email } = req.body;
-
-//     const checkUserPresent = await User.findOne({ email });
-//     if (checkUserPresent) {
-//       return res.status(401).json({
-//         success: false,
-//         message: "User is Already Registered",
-//       });
-//     }
-
-//     const otp = otpGenerator.generate(6, {
-//       upperCaseAlphabets: false,
-//       lowerCaseAlphabets: false,
-//       specialChars: false,
-//     });
-
-//     await OTP.create({ email, otp });
-
-//     // 🔥 RESPOND IMMEDIATELY
-//     return res.status(200).json({
-//       success: true,
-//       message: "OTP generated successfully",
-//     });
-
-//   } catch (error) {
-//     console.error("otp error -> ", error.message);
-//     return res.status(500).json({
-//       success: false,
-//       message: "Failed to generate OTP",
-//     });
-//   }
-// };
-exports.sendotp = async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, password } = req.body;
 
-    const checkUserPresent = await User.findOne({ email });
-    if (checkUserPresent) {
-      return res.status(401).json({
+    // 1. Required fields
+    if (!email || !password) {
+      return res.status(400).json({
         success: false,
-        message: "User is Already Registered",
+        message: "Email and password are required",
       });
     }
 
+    const normalizedEmail = email.toLowerCase();
+
+    // 2. Find user
+    const user = await User.findOne({ email: normalizedEmail })
+      .populate("additionalDetails");
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not registered",
+      });
+    }
+
+    // 3. Approved check (important for Instructor)
+    if (user.accountType === "Instructor" && !user.approved) {
+      return res.status(403).json({
+        success: false,
+        message: "Instructor account is not approved yet",
+      });
+    }
+
+    // 4. Password check
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Password is incorrect",
+      });
+    }
+
+    // 5. Generate token
+    const token = jwt.sign(
+      { id: user._id, email: user.email, accountType: user.accountType },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    // 6. Remove sensitive fields
+    user.password = undefined;
+
+    // 7. Cookie (production-safe)
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      maxAge: 3 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.status(200).json({
+      success: true,
+      user,
+      message: "Login successful",
+    });
+
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Login failed. Please try again later.",
+    });
+  }
+};
+
+
+// Send OTP For Email Verification
+exports.sendotp = async (req, res) => {
+  try {
+    let { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required",
+      });
+    }
+
+    // 1. Normalize email
+    email = email.toLowerCase();
+
+    // 2. Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: "User is already registered",
+      });
+    }
+
+    // 3. OTP rate limit (basic)
+    const recentOtp = await OTP.findOne({ email })
+      .sort({ createdAt: -1 });
+
+    if (
+      recentOtp &&
+      Date.now() - recentOtp.createdAt.getTime() < 60 * 1000
+    ) {
+      return res.status(429).json({
+        success: false,
+        message: "Please wait before requesting another OTP",
+      });
+    }
+
+    // 4. Generate OTP
     const otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
     });
 
+    // 5. Remove old OTPs
+    await OTP.deleteMany({ email });
+
+    // 6. Save new OTP
     await OTP.create({ email, otp });
 
-    // ✅ RESPONSE PEHLE
+    // 7. Respond immediately
     res.status(200).json({
       success: true,
       message: "OTP generated successfully",
     });
 
-    // ✅ MAIL BACKGROUND ME (NO await)
+    // 8. Send email async
     mailSender(
       email,
-      "Your OTP for StuddyAdda",
+      "Your OTP for StudyAdda",
       `Your OTP is ${otp}`
     )
       .then(() => {
-        console.log("OTP mail sent successfully");
+        console.log("OTP mail sent");
       })
       .catch((err) => {
         console.error("OTP mail error:", err.message);
       });
 
   } catch (error) {
-    console.error("otp error -> ", error.message);
+    console.error("SEND OTP ERROR:", error);
     return res.status(500).json({
       success: false,
       message: "Failed to generate OTP",

@@ -1,30 +1,49 @@
-const cloudinary = require('cloudinary').v2
+const cloudinary = require("cloudinary").v2;
+const streamifier = require("streamifier");
 
+/* =========================
+   IMAGE UPLOAD (STREAM)
+========================= */
+exports.uploadImageToCloudinary = (file, folder, height, quality) => {
+  return new Promise((resolve, reject) => {
+    const options = {
+      folder,
+      resource_type: "image",
+    };
 
+    if (height) options.height = height;
+    if (quality) options.quality = quality;
 
-exports.uploadImageToCloudinary = async(file, folder, height, quality ) => {
-    const options = {folder};
+    const uploadStream = cloudinary.uploader.upload_stream(
+      options,
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
 
-    if(height) {
-        options.height = height;
-    }
+    streamifier.createReadStream(file.data).pipe(uploadStream);
+  });
+};
 
-    if(quality){
-        options.quality = quality;
-    }
+/* =========================
+   VIDEO UPLOAD (STREAM)
+========================= */
+exports.uploadVideoToCloudinary = (file, folder) => {
+  return new Promise((resolve, reject) => {
+    const options = {
+      folder,
+      resource_type: "video",
+    };
 
-    options.resource_type = "image";
+    const uploadStream = cloudinary.uploader.upload_stream(
+      options,
+      (error, result) => {
+        if (error) return reject(error);
+        resolve(result);
+      }
+    );
 
-    return await cloudinary.uploader.upload(file.tempFilePath, options);
-}
-
-
-// 🔹 Video Upload
-exports.uploadVideoToCloudinary = async (file, folder) => {
-  const options = {
-    folder,
-    resource_type: "video", // 🔥 REQUIRED
-  };
-
-  return await cloudinary.uploader.upload(file.tempFilePath, options);
+    streamifier.createReadStream(file.data).pipe(uploadStream);
+  });
 };

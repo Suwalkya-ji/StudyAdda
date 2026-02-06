@@ -53,10 +53,10 @@ app.use(cookieParser());
 
 app.use(
   fileUpload({
-    useTempFiles: true,
-    tempFileDir: "/temp",
+    limits: { fileSize: 50 * 1024 * 1024 },
   })
 );
+
 
 // cloudinary connect
 cloudinaryConnect();
