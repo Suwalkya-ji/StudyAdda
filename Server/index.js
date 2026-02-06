@@ -14,6 +14,16 @@ const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
 const dotenv = require("dotenv");
 
+
+console.log("ENV CHECK:", {
+  mongo: !!process.env.MONGODB_URL,
+  jwt: !!process.env.JWT_SECRET,
+  cloudinary: !!process.env.CLOUDINARY_CLOUD_NAME,
+  mail: !!process.env.MAIL_USER,
+});
+
+
+
 dotenv.config();
 const PORT = process.env.PORT || 4000;
 
