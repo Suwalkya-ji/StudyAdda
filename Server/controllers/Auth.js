@@ -145,14 +145,6 @@ exports.login = async (req, res) => {
       });
     }
 
-    // 3. Approved check (important for Instructor)
-    if (user.accountType === "Instructor" && !user.approved) {
-      return res.status(403).json({
-        success: false,
-        message: "Instructor account is not approved yet",
-      });
-    }
-
     // 4. Password check
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
