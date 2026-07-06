@@ -76,7 +76,7 @@ StudyAdda-main/
 
 ### 1. Clone and install
 ```bash
-git clone https://github.com/<your-username>/StudyAdda.git
+git clone https://github.com/Suwalkya-ji/StudyAdda.git
 cd StudyAdda
 npm install
 cd Server && npm install && cd ..
