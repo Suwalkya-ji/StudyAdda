@@ -3,17 +3,18 @@ const nodemailer = require("nodemailer");
 const mailSender = async (email, title, body) => {
   try {
     const cleanPass = process.env.MAIL_PASS ? process.env.MAIL_PASS.replace(/\s+/g, '') : '';
-    const host = process.env.MAIL_HOST || "smtp.gmail.com";
+    const host = process.env.MAIL_HOST || "smtp-relay.brevo.com";
+    const port = parseInt(process.env.MAIL_PORT) || 2525; // 2525 bypasses Render SMTP blocks
 
     const transporter = nodemailer.createTransport({
       host: host,
-      port: 465,              // ✅ Port 465 (SSL) MUST be explicit because Render blocks Port 587
-      secure: true,           // ✅ Must be true for port 465
+      port: port,
+      secure: false, // Upgrade via STARTTLS on 2525
       auth: {
         user: process.env.MAIL_USER,
         pass: cleanPass,
       },
-      connectionTimeout: 10000, // 10s timeout to prevent infinite pending
+      connectionTimeout: 10000,
       greetingTimeout: 10000,
       socketTimeout: 10000,
     });
