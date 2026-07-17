@@ -1,155 +1,206 @@
-# StudyAdda
+# StudyAdda - Full-Stack EdTech Platform & AI Learning Hub
 
-An EdTech platform where instructors create and sell courses, and students browse, buy, and track progress through them. Built on the MERN stack with Razorpay payments and Cloudinary for media storage.
+[![MERN Stack](https://img.shields.io/badge/Stack-MERN-blue.svg)](https://mongodb.com)
+[![React](https://img.shields.io/badge/Frontend-React%2019-61dafb.svg)](https://react.dev)
+[![Node.js](https://img.shields.io/badge/Backend-Node.js%20v18%2B-green.svg)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Server-Express%205-000000.svg)](https://expressjs.com)
+[![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind%20v4-38bdf8.svg)](https://tailwindcss.com)
+[![AI Powered](https://img.shields.io/badge/AI%20Tutor-OpenRouter%20%2F%20Gemini-orange.svg)](https://openrouter.ai)
 
-## Straight talk before you use this
+**StudyAdda** is a feature-rich, full-stack EdTech platform built on the MERN stack. It empowers instructors to create and monetize multi-media courses while providing students with a seamless learning experience complete with video streaming, progress tracking, secure payments, and an interactive **AI-powered Tutor**.
 
-This codebase's structure, controller names, and flow (Auth → OTP → Section/SubSection course builder → Razorpay capture/verify → course progress tracking) match the well-known "StudyNotion" tutorial project almost file-for-file. That's fine to use as a learning project or resume piece, but:
+---
 
-- If you put this on your resume, expect to be asked to explain the OTP verification flow, the JWT auth middleware, and the Razorpay payment verification signature logic live. Know them cold before you claim them.
-- Don't claim you "designed the architecture" if you followed a tutorial's structure. Say you built it following a structured MERN course and highlight what you changed, debugged, or extended yourself — that's a defensible, honest claim.
+## ✨ Features
 
-## Features
+### 🎓 Student Experience
+- **Interactive AI Tutor**: Ask instant doubts, generate topic explanations with real-world analogies, and take dynamic MCQ quizzes powered by LLMs (OpenRouter / Gemini AI).
+- **Course Discovery**: Browse categorized course catalogs, view detailed syllabi, and read student ratings & reviews.
+- **Seamless Checkout**: Secure multi-course purchasing via Razorpay integration.
+- **HD Video Player**: Integrated HTML5 video player for lecture viewing with section navigation.
+- **Progress Tracking**: Automatic progress updates per sub-section/lecture with overall completion metrics.
+- **Ratings & Feedback**: Submit star ratings and written reviews upon completing course content.
 
-**For students**
-- Sign up with email OTP verification
-- Browse courses by category
-- Buy courses via Razorpay (order creation + signature verification)
-- Interactive **AI Tutor** (Ask doubts, generate topic explanations with analogies, and take dynamic MCQ quizzes powered by OpenRouter / Gemini AI)
-- HTML5 Video Player for seamless lecture viewing
-- Track progress within a purchased course (section/sub-section completion)
-- Rate and review completed courses
-- View enrolled courses and update profile
+### 👨‍🏫 Instructor Portal
+- **Course Builder**: Multi-step workflow for creating courses, defining sections, and adding sub-sections with video lectures.
+- **Media Management**: Direct cloud video & thumbnail uploads via Cloudinary.
+- **Instructor Dashboard**: Data visualization powered by Chart.js showing total enrolled students, course sales, and revenue insights.
+- **Course Management**: Edit published courses, add sections/sub-sections, or unpublish courses.
 
-**For instructors**
-- Create courses with sections and sub-sections (video lectures)
-- Upload course thumbnails and lecture videos (Cloudinary)
-- Edit or delete their own courses
-- Dashboard with enrolled-student stats and course-wise data (Chart.js)
+### 🔐 Platform Security & Core Architecture
+- **Custom Authentication**: JWT-based auth with Role-Based Access Control (RBAC) for `Student`, `Instructor`, and `Admin`.
+- **OTP Verification**: Email verification via Nodemailer with timed OTP validity for signup.
+- **Password Recovery**: Secure password reset tokens delivered via email.
+- **Global State Management**: Redux Toolkit slices handling authentication, cart, current course, active lecture, and user profile.
+- **Modern UI/UX**: Premium dark mode theme, glassmorphism modals, and smooth micro-animations built with Tailwind CSS.
 
-**Platform-wide**
-- JWT-based authentication with role checks (Student / Instructor / Admin)
-- Password reset via emailed token
-- Contact form with auto-response email
-- Redux Toolkit for client-side state (auth, cart, course, profile)
-- Full dark mode aesthetic with high-contrast glassmorphism modals and interactive hover animations
+---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-**Frontend:** React 19, Vite, Redux Toolkit, React Router v7, Tailwind CSS v4, React Hook Form, Chart.js, Swiper
+| Domain | Technologies |
+|---|---|
+| **Frontend** | React 19, Vite, Redux Toolkit, React Router v7, Tailwind CSS v4, React Hook Form, Chart.js, Swiper |
+| **Backend** | Node.js, Express 5, Mongoose / MongoDB |
+| **Authentication** | JSON Web Tokens (JWT), bcrypt.js, Cookie-Parser |
+| **Payments** | Razorpay Payment Gateway (Order API + HMAC Signature Verification) |
+| **Cloud Storage** | Cloudinary (Image & Video Uploads) |
+| **Email Services** | Nodemailer (HTML Email Templates for OTP, Enrollment, Payment, Password Reset) |
+| **AI Integration** | OpenRouter API / Google Gemini API with fallback models |
 
-**Backend:** Node.js, Express 5, MongoDB with Mongoose
+---
 
-**Third-party services:**
-- OpenRouter API / Google Gemini API — AI Tutor & quiz generator
-- Razorpay — payment processing
-- Cloudinary — image and video storage
-- Nodemailer — OTP, password reset, and payment confirmation emails
-- JWT + bcrypt — auth and password hashing
-
-## Project Structure
+## 📂 Project Structure
 
 ```
-StudyAdda-main/
-├── src/                        # React frontend
-│   ├── component/
-│   │   ├── core/                # Feature components: Auth, Dashboard, Course, HomePage, ViewCourse (AiTutor)...
-│   │   └── common/               # Shared UI (Navbar, Footer, ConfirmationModal, Tab, RatingStars...)
-│   ├── pages/                   # Route-level pages
-│   ├── services/                # Axios instance + API operation functions (aiAPI)
-│   ├── slices/                  # Redux slices (auth, cart, course, profile, viewCourse)
-│   ├── reducer/                  # Combined Redux store
-│   ├── hooks/                    # Custom hooks
-│   └── data/                     # Static config (nav links, footer links, country codes)
-└── Server/
-    ├── config/                   # DB, Cloudinary, Razorpay setup
-    ├── controllers/               # Route logic (AI, Auth, Course, Section, Payments, Profile, etc.)
-    ├── middlewares/               # auth.js — JWT verification + role checks
-    ├── models/                    # Mongoose schemas
-    ├── mail/templates/            # HTML email templates
-    ├── utils/                     # Image uploader, mail sender, duration formatter
-    └── routes/                    # API route definitions (AI, User, Course, etc.)
+studyAdda/
+├── src/                          # React Frontend
+│   ├── assets/                   # Images, logos, icons, fonts
+│   ├── component/                # React Components
+│   │   ├── common/               # Shared components (Navbar, Footer, Modals, RatingStars, etc.)
+│   │   ├── ContactPage/          # Contact form & details
+│   │   └── core/                 # Feature-specific components
+│   │       ├── Auth/             # Login, Signup, OTP Verification, Password Reset
+│   │       ├── Dashboard/        # Instructor stats, Cart, My Courses, Add Course, Settings
+│   │       ├── HomePage/         # Hero banner, Code Blocks, Explore Courses, CTA sections
+│   │       └── ViewCourse/       # Video Player, Sidebar, AI Tutor (AiTutor.jsx)
+│   ├── data/                     # Static navigation, footer links, country codes
+│   ├── hooks/                    # Custom React hooks
+│   ├── pages/                    # Main route views (Home, CourseDetails, Catalog, Dashboard, etc.)
+│   ├── reducer/                  # Combined Redux reducers
+│   ├── services/                 # Axios HTTP client & API operations (aiAPI, authAPI, courseAPI, etc.)
+│   └── slices/                   # Redux slices (authSlice, cartSlice, courseSlice, profileSlice, viewCourseSlice)
+│
+└── Server/                       # Node.js & Express Backend
+    ├── config/                   # Database, Cloudinary, Razorpay initialization
+    ├── controllers/              # Business logic (AI, Auth, Course, Section, SubSection, Payments, Profile, etc.)
+    ├── mail/templates/           # HTML email templates
+    ├── middlewares/              # JWT auth verification & role authorization (isStudent, isInstructor, isAdmin)
+    ├── models/                   # Mongoose schemas (User, Course, Section, SubSection, RatingAndReview, etc.)
+    ├── routes/                   # API route definitions (User, Course, Payments, Profile, AI)
+    └── utils/                    # Image/video uploader, mail sender, duration calculator
 ```
 
-## Getting Started
+---
+
+## 🚀 Quick Start & Installation
 
 ### Prerequisites
-- Node.js (v18+ recommended)
-- A MongoDB instance (local or Atlas)
-- OpenRouter API Key (or Gemini API Key), Cloudinary account, Razorpay account, and an SMTP-capable email account
+- **Node.js**: `v18.0.0` or higher
+- **MongoDB**: Local MongoDB instance or MongoDB Atlas connection URI
+- **API Keys**: OpenRouter API key, Cloudinary account, Razorpay account, and SMTP credentials for email sending.
 
-### 1. Clone and install
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/Suwalkya-ji/StudyAdda.git
-cd StudyAdda
-npm install
-cd Server && npm install && cd ..
+cd studyAdda
 ```
 
-### 2. Configure environment variables
+### 2. Install Dependencies
 
-Create a `.env` file inside `Server/`:
+Install frontend dependencies:
+```bash
+npm install
+```
+
+Install backend dependencies:
+```bash
+cd Server
+npm install
+cd ..
+```
+
+### 3. Environment Variables Configuration
+
+Create a `.env` file in the **`Server/`** directory:
 ```env
 PORT=4000
-MONGODB_URL=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
+MONGODB_URL=mongodb+srv://<username>:<password>@cluster.mongodb.net/studyadda
+JWT_SECRET=your_jwt_secret_key
 OPENROUTER_API_KEY=your_openrouter_api_key
+
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-FOLDER_NAME=your_cloudinary_folder_name
-MAIL_HOST=your_smtp_host
-MAIL_USER=your_smtp_username
-MAIL_PASS=your_smtp_password
+FOLDER_NAME=StudyAdda
+
+MAIL_HOST=smtp.gmail.com
+MAIL_USER=your_email@gmail.com
+MAIL_PASS=your_email_app_password
+
 RAZORPAY_KEY=your_razorpay_key_id
 RAZORPAY_SECRET=your_razorpay_key_secret
 ```
 
-Create a `.env` file in the project root (for the frontend):
+Create a `.env` file in the **root** directory (for Vite frontend):
 ```env
 VITE_BASE_URL=http://localhost:4000/api/v1
 VITE_RAZORPAY_KEY=your_razorpay_key_id
 ```
 
-### 3. Run it
-From the project root, this starts both frontend and backend together:
+### 4. Start the Application
+
+To run both frontend and backend concurrently from the root directory:
 ```bash
 npm run dev
 ```
-Or run them separately:
+
+Alternatively, you can run them separately in two terminal windows:
 ```bash
-npm run client   # frontend only, Vite dev server
-npm run server   # backend only, via nodemon
+# Terminal 1 - Frontend (Vite on http://localhost:5173)
+npm run client
+
+# Terminal 2 - Backend (Express on http://localhost:4000)
+npm run server
 ```
 
-Frontend runs on `http://localhost:5173`, backend on `http://localhost:4000` by default.
+---
 
-## Key API Routes
+## 🔗 Key API Routes
 
-| Method | Route | Description |
-|---|---|---|
-| POST | `/api/v1/auth/sendotp` | Send OTP to email for signup verification |
-| POST | `/api/v1/auth/signup` | Register a new user (student/instructor) |
-| POST | `/api/v1/auth/login` | Log in, returns JWT |
-| POST | `/api/v1/auth/changepassword` | Change password (authenticated) |
-| POST | `/api/v1/auth/reset-password-token` | Request password reset link |
-| POST | `/api/v1/auth/reset-password` | Reset password using token |
-| GET | `/api/v1/course/getAllCourses` | List all published courses |
-| POST | `/api/v1/course/createCourse` | Create a course (instructor only) |
-| POST | `/api/v1/course/addSection` / `addSubSection` | Add course content (instructor only) |
-| POST | `/api/v1/course/createRating` | Submit a course rating (student only) |
-| POST | `/api/v1/payment/capturePayment` | Create a Razorpay order for selected courses |
-| POST | `/api/v1/payment/verifyPayment` | Verify Razorpay signature and enroll student |
-| GET | `/api/v1/profile/getEnrolledCourses` | Get a student's enrolled courses |
-| GET | `/api/v1/profile/instructorDashboard` | Instructor's course/revenue stats |
-| POST | `/api/v1/ai/ask-doubt` | Ask AI Tutor a doubt about current lecture/topic |
-| POST | `/api/v1/ai/explain-topic` | Generate structured explanation with real-world analogies |
-| POST | `/api/v1/ai/generate-quiz` | Dynamically generate multiple-choice quiz questions |
-| POST | `/api/v1/reach/contact` | Submit contact form |
+### 🔑 Authentication (`/api/v1/auth`)
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| POST | `/sendotp` | Public | Send verification OTP to user's email |
+| POST | `/signup` | Public | Register new account (Student / Instructor) |
+| POST | `/login` | Public | Authenticate user & return JWT token |
+| POST | `/changepassword` | Authenticated | Change account password |
+| POST | `/reset-password-token` | Public | Generate & email password reset token |
+| POST | `/reset-password` | Public | Set new password using token |
 
-## Notes
+### 📚 Course Operations (`/api/v1/course`)
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | `/getAllCourses` | Public | Fetch all published courses |
+| POST | `/getCourseDetails` | Public | Fetch complete details for a specific course |
+| POST | `/createCourse` | Instructor | Create a new course with details & thumbnail |
+| POST | `/addSection` | Instructor | Add a new section to a course |
+| POST | `/addSubSection` | Instructor | Upload video lecture and attach to section |
+| POST | `/createRating` | Student | Submit rating & review for an enrolled course |
 
-- Auth is custom (not a third-party provider): JWT is issued on login and role (`Student`/`Instructor`/`Admin`) is checked via middleware on protected routes.
-- Payment flow is two-step: `capturePayment` creates the Razorpay order, `verifyPayment` checks the signature server-side and only then marks the student enrolled — know this distinction if asked in an interview, since skipping the verification step is the difference between "we check payment" and "we don't."
-- AI Tutor uses OpenRouter API with automatic free model fallback (`openrouter/free`, `llama-3.3-70b`, `gemma-4-31b`, `qwen3-coder`).
+### 💳 Payments (`/api/v1/payment`)
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| POST | `/capturePayment` | Student | Create Razorpay order for cart items |
+| POST | `/verifyPayment` | Student | Verify HMAC signature and enroll student |
+| POST | `/sendPaymentSuccessEmail` | Student | Send email confirmation upon payment success |
+
+### 🤖 AI Tutor (`/api/v1/ai`)
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| POST | `/ask-doubt` | Student | Ask AI Tutor doubts about current lecture/topic |
+| POST | `/explain-topic` | Student | Request in-depth topic breakdown with analogies |
+| POST | `/generate-quiz` | Student | Generate dynamic multiple-choice quiz questions |
+
+---
+
+## 💳 Security & Payment Verification Flow
+
+1. **Order Creation**: The client requests `/capturePayment`. The server creates an order with Razorpay and returns the `orderId`.
+2. **Payment Execution**: The client triggers the Razorpay modal for payment processing.
+3. **Signature Verification**: Upon payment completion, the client posts `razorpay_payment_id`, `razorpay_order_id`, and `razorpay_signature` to `/verifyPayment`.
+4. **Server Authentication**: The server computes an HMAC-SHA256 signature using `RAZORPAY_SECRET` and compares it against `razorpay_signature`.
+5. **Enrollment**: Only after signature validation matches is the student enrolled in the course database models and sent a confirmation email.
+
+---
 
