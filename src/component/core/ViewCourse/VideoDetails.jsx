@@ -6,6 +6,7 @@ import ReactPlayer from "react-player"
 import { markLectureAsComplete } from "../../../services/operations/courseDetailsAPI"
 import { updateCompletedLectures } from "../../../slices/viewCourseSlice"
 import IconBtn from "../../common/IconBtn"
+import AiTutor from "./AiTutor"
 
 const VideoDetails = () => {
   const { courseId, sectionId, subSectionId } = useParams()
@@ -39,6 +40,7 @@ const VideoDetails = () => {
       (sub) => sub._id === subSectionId
     )
 
+    console.log("CURRENT SUBSECTION VIDEO URL 👉", subSection?.videoUrl)
     setVideoData(subSection)
     setPreviewSource(courseEntireData.thumbnail)
     setVideoEnded(false)
@@ -62,9 +64,6 @@ const VideoDetails = () => {
     const subIndex = subSections.findIndex(
       (sub) => sub._id === subSectionId
     )
-    console.log("SUB SECTION DATA 👉", subSections)
-    
-   setVideoData(subSections)
 
     return (
       sectionIndex === courseSectionData.length - 1 &&
@@ -124,38 +123,41 @@ const VideoDetails = () => {
     setLoading(false)
   }
 
+  const getVideoUrl = (url) => {
+    if (!url) return ""
+    return url.replace(/^http:\/\//, "https://")
+  }
+
   return (
     <div className="flex flex-col gap-5 text-white">
       {!videoData ? (
-        <img
-          src={previewSource}
-          alt="Preview"
-          className="w-full rounded-md object-cover"
-        />
-      ) : (
-        <div className="relative aspect-video rounded-md overflow-hidden">
-          {/* <ReactPlayer
-            ref={playerRef}
-            url={videoData.videoUrl}
-            controls
-            width="100%"
-            height="100%"
-            onEnded={() => setVideoEnded(true)}
-          /> */}
-          {videoData?.videoUrl ? (
-          <ReactPlayer
-            ref={playerRef}
-            url={videoData.videoUrl}
-            controls
-            width="100%"
-            height="100%"
-            onEnded={() => setVideoEnded(true)}
+        previewSource ? (
+          <img
+            src={previewSource}
+            alt="Preview"
+            className="w-full rounded-md object-cover"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-white">
-            Video not available
+          <div className="flex aspect-video items-center justify-center rounded-md bg-richblack-800 text-richblack-200">
+            Loading video...
           </div>
-        )}
+        )
+      ) : (
+        <div className="relative aspect-video rounded-md overflow-hidden bg-richblack-900">
+          {videoData?.videoUrl ? (
+            <video
+              ref={playerRef}
+              src={getVideoUrl(videoData.videoUrl)}
+              controls
+              playsInline
+              className="w-full h-full object-contain"
+              onEnded={() => setVideoEnded(true)}
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-white">
+              Video not available
+            </div>
+          )}
 
 
           {videoEnded && (
@@ -172,7 +174,10 @@ const VideoDetails = () => {
               <IconBtn
                 disabled={loading}
                 onclick={() => {
-                  playerRef.current?.seekTo(0, "seconds")
+                  if (playerRef.current) {
+                    playerRef.current.currentTime = 0
+                    playerRef.current.play()
+                  }
                   setVideoEnded(false)
                 }}
                 text="Rewatch"
@@ -198,6 +203,13 @@ const VideoDetails = () => {
 
       <h1 className="mt-4 text-3xl font-semibold">{videoData?.title}</h1>
       <p className="pb-6">{videoData?.description}</p>
+
+      {/* AI Tutor Panel */}
+      <AiTutor
+        topicTitle={videoData?.title}
+        topicDescription={videoData?.description}
+        courseTitle={courseEntireData?.courseName}
+      />
     </div>
   )
 }

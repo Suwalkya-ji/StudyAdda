@@ -70,3 +70,10 @@ export const settingsEndpoints = {
   CHANGE_PASSWORD_API: BASE_URL + "/auth/changepassword",
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
 }
+
+// AI TUTOR ENDPOINTS
+export const aiEndpoints = {
+  ASK_DOUBT_API: BASE_URL + "/ai/ask-doubt",
+  EXPLAIN_TOPIC_API: BASE_URL + "/ai/explain-topic",
+  GENERATE_QUIZ_API: BASE_URL + "/ai/generate-quiz",
+}

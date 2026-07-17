@@ -234,15 +234,24 @@ const Navbar = () => {
         </li>
       ))}
 
-      {!token && (
-        <>
+      {token ? (
+        <div className="flex items-center justify-between border-t border-richblack-700 pt-4" onClick={() => setOpenMenu(false)}>
+          <span className="text-xs text-richblack-300">My Account:</span>
+          <ProfileDropDown />
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3 border-t border-richblack-700 pt-4">
           <Link to="/login" onClick={() => setOpenMenu(false)}>
-            Log in
+            <button className="w-full rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-center text-sm text-richblack-100">
+              Log in
+            </button>
           </Link>
           <Link to="/signup" onClick={() => setOpenMenu(false)}>
-            Sign Up
+            <button className="w-full rounded-md border border-richblack-700 bg-yellow-50 px-4 py-2 text-center text-sm font-semibold text-richblack-900">
+              Sign Up
+            </button>
           </Link>
-        </>
+        </div>
       )}
     </ul>
   </div>

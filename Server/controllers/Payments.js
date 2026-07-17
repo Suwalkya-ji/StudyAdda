@@ -252,15 +252,19 @@ const enrollStudents = async (courses, userId) => {
       { new: true }
     );
 
-    // ✅ FIXED email
-    await mailSender(
-      enrolledStudent.email,
-      `Successfully Enrolled into ${enrolledCourse.courseName}`,
-      courseEnrollmentEmail(
-        enrolledCourse.courseName,
-        `${enrolledStudent.firstName} ${enrolledStudent.lastName}`
-      )
-    );
+    // ✅ Send email safely without blocking enrollment
+    try {
+      await mailSender(
+        enrolledStudent.email,
+        `Successfully Enrolled into ${enrolledCourse.courseName}`,
+        courseEnrollmentEmail(
+          enrolledCourse.courseName,
+          `${enrolledStudent.firstName} ${enrolledStudent.lastName}`
+        )
+      );
+    } catch (emailErr) {
+      console.warn("⚠️ Non-fatal: Enrollment email could not be sent:", emailErr.message);
+    }
   }
 };
 

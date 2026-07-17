@@ -4,12 +4,17 @@ const mailSender = async (email, title, body) => {
   try {
     const cleanPass = process.env.MAIL_PASS ? process.env.MAIL_PASS.replace(/\s+/g, '') : '';
     const host = process.env.MAIL_HOST || "smtp-relay.brevo.com";
-    const port = parseInt(process.env.MAIL_PORT) || 2525; // 2525 bypasses Render SMTP blocks
+    
+    // Automatically select port 587 for Gmail and 2525 for Brevo/Default
+    let port = parseInt(process.env.MAIL_PORT);
+    if (!port) {
+      port = host.includes("gmail") ? 587 : 2525;
+    }
 
     const transporter = nodemailer.createTransport({
       host: host,
       port: port,
-      secure: false, // Upgrade via STARTTLS on 2525
+      secure: port === 465, // secure for 465, TLS/STARTTLS for 587 or 2525
       auth: {
         user: process.env.MAIL_USER,
         pass: cleanPass,

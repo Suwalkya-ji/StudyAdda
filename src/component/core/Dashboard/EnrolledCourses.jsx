@@ -4,6 +4,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
+import { toast } from "react-hot-toast"
 import { getUserEnrolledCourses } from "../../../services/operations/profileAPI"
 
 export default function EnrolledCourses() {
@@ -55,8 +56,14 @@ export default function EnrolledCourses() {
               <div
                 className="flex w-[45%] cursor-pointer items-center gap-4 px-5 py-3"
                 onClick={() => {
+                  const firstSection = course?.courseContent?.[0]
+                  const firstSubSection = firstSection?.subSection?.[0]
+                  if (!firstSection || !firstSubSection) {
+                    toast.error("This course has no published lectures yet.")
+                    return
+                  }
                   navigate(
-                    `/view-course/${course?._id}/section/${course.courseContent?.[0]?._id}/sub-section/${course.courseContent?.[0]?.subSection?.[0]?._id}`
+                    `/view-course/${course?._id}/section/${firstSection._id}/sub-section/${firstSubSection._id}`
                   )
                 }}
               >

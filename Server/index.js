@@ -1,5 +1,14 @@
 const express = require("express");
 const app = express();
+const dns = require("dns");
+const dotenv = require("dotenv");
+
+// Load environment variables immediately
+dotenv.config();
+
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder("ipv4first");
+}
 
 const userRoutes = require("./routes/User");
 const profileRoutes = require("./routes/Profile");
@@ -12,8 +21,6 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const { cloudinaryConnect } = require("./config/cloudinary");
 const fileUpload = require("express-fileupload");
-const dotenv = require("dotenv");
-
 
 console.log("ENV CHECK:", {
   mongo: !!process.env.MONGODB_URL,
@@ -22,9 +29,6 @@ console.log("ENV CHECK:", {
   mail: !!process.env.MAIL_USER,
 });
 
-
-
-dotenv.config();
 const PORT = process.env.PORT || 4000;
 
 // database connect
@@ -71,6 +75,8 @@ app.use(
 // cloudinary connect
 cloudinaryConnect();
 
+const aiRoutes = require("./routes/AI");
+
 /* =======================
    ROUTES
 ======================= */
@@ -79,6 +85,7 @@ app.use("/api/v1/profile", profileRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/reach", contactUsRoute);
+app.use("/api/v1/ai", aiRoutes);
 
 // default route
 app.get("/", (req, res) => {
