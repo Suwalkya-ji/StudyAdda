@@ -19,8 +19,10 @@ const mailSender = async (email, title, body) => {
       socketTimeout: 10000,
     });
 
+    const fromEmail = process.env.MAIL_FROM || "dineshsuwalkya33445@gmail.com";
+
     const info = await transporter.sendMail({
-      from: `StudyAdda <${process.env.MAIL_USER}>`,
+      from: `StudyAdda <${fromEmail}>`,
       to: `${email}`,
       subject: `${title}`,
       html: `${body}`,
