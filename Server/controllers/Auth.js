@@ -209,6 +209,7 @@ exports.sendotp = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to generate OTP",
+      error: error.message || error.toString(),
     });
   }
 };

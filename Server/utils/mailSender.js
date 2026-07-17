@@ -3,18 +3,31 @@ const nodemailer = require("nodemailer");
 const mailSender = async (email, title, body) => {
   try {
     const cleanPass = process.env.MAIL_PASS ? process.env.MAIL_PASS.replace(/\s+/g, '') : '';
-    const transporter = nodemailer.createTransport({
-      host: process.env.MAIL_HOST || "smtp.gmail.com",
-      port: 465,              // ✅ Port 465 (SSL) works reliably on cloud hosts (Render, Vercel, etc.)
-      secure: true,           // ✅ Required for port 465
-      auth: {
-        user: process.env.MAIL_USER,
-        pass: cleanPass,
-      },
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 15000,
-    });
+    const host = process.env.MAIL_HOST || "smtp.gmail.com";
+    const isGmail = host.includes("gmail");
+
+    const transporterConfig = isGmail
+      ? {
+          service: "gmail",
+          auth: {
+            user: process.env.MAIL_USER,
+            pass: cleanPass,
+          },
+        }
+      : {
+          host: host,
+          port: 465,
+          secure: true,
+          auth: {
+            user: process.env.MAIL_USER,
+            pass: cleanPass,
+          },
+          connectionTimeout: 15000,
+          greetingTimeout: 15000,
+          socketTimeout: 15000,
+        };
+
+    const transporter = nodemailer.createTransport(transporterConfig);
 
     const info = await transporter.sendMail({
       from: 'StudyAdda By Dinesh',
