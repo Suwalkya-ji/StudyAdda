@@ -1,32 +1,35 @@
+const nodemailer = require("nodemailer");
+
 const mailSender = async (email, title, body) => {
   try {
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      throw new Error("RESEND_API_KEY is missing in environment variables");
-    }
+    const cleanPass = process.env.MAIL_PASS ? process.env.MAIL_PASS.replace(/\s+/g, '') : '';
+    const host = process.env.MAIL_HOST || "smtp-relay.brevo.com";
+    const port = parseInt(process.env.MAIL_PORT) || 2525; // 2525 bypasses Render SMTP blocks
 
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey.trim()}`,
+    const transporter = nodemailer.createTransport({
+      host: host,
+      port: port,
+      secure: false, // Upgrade via STARTTLS on 2525
+      auth: {
+        user: process.env.MAIL_USER,
+        pass: cleanPass,
       },
-      body: JSON.stringify({
-        from: "StudyAdda <onboarding@resend.dev>",
-        to: [email],
-        subject: title,
-        html: body,
-      }),
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     });
 
-    const data = await response.json();
+    const fromEmail = process.env.MAIL_FROM || process.env.MAIL_USER;
 
-    if (!response.ok) {
-      throw new Error(data.message || JSON.stringify(data));
-    }
+    const info = await transporter.sendMail({
+      from: `StudyAdda <${fromEmail}>`,
+      to: `${email}`,
+      subject: `${title}`,
+      html: `${body}`,
+    });
 
-    console.log("Mail sent via Resend:", data.id);
-    return data;
+    console.log("Mail sent:", info.messageId);
+    return info;
   } catch (error) {
     console.error("Mail sender error:", error.message);
     throw error;
