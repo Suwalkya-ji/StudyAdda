@@ -197,27 +197,13 @@ exports.sendotp = async (req, res) => {
       specialChars: false,
     });
 
+    // Create OTP document in DB (triggers pre-save hook in OTP.js which sends email and awaits it)
     await OTP.create({ email, otp });
 
-    // ✅ RESPONSE PEHLE
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "OTP generated successfully",
     });
-
-    // ✅ MAIL BACKGROUND ME (NO await)
-    mailSender(
-      email,
-      "Your OTP for StuddyAdda",
-      `Your OTP is ${otp}`
-    )
-      .then(() => {
-        console.log("OTP mail sent successfully");
-      })
-      .catch((err) => {
-        console.error("OTP mail error:", err.message);
-      });
-
   } catch (error) {
     console.error("otp error -> ", error.message);
     return res.status(500).json({
