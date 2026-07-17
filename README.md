@@ -15,6 +15,8 @@ This codebase's structure, controller names, and flow (Auth → OTP → Section/
 - Sign up with email OTP verification
 - Browse courses by category
 - Buy courses via Razorpay (order creation + signature verification)
+- Interactive **AI Tutor** (Ask doubts, generate topic explanations with analogies, and take dynamic MCQ quizzes powered by OpenRouter / Gemini AI)
+- HTML5 Video Player for seamless lecture viewing
 - Track progress within a purchased course (section/sub-section completion)
 - Rate and review completed courses
 - View enrolled courses and update profile
@@ -30,14 +32,16 @@ This codebase's structure, controller names, and flow (Auth → OTP → Section/
 - Password reset via emailed token
 - Contact form with auto-response email
 - Redux Toolkit for client-side state (auth, cart, course, profile)
+- Full dark mode aesthetic with high-contrast glassmorphism modals and interactive hover animations
 
 ## Tech Stack
 
-**Frontend:** React 19, Vite, Redux Toolkit, React Router v7, Tailwind CSS v4, React Hook Form, Chart.js, Swiper, React Player
+**Frontend:** React 19, Vite, Redux Toolkit, React Router v7, Tailwind CSS v4, React Hook Form, Chart.js, Swiper
 
 **Backend:** Node.js, Express 5, MongoDB with Mongoose
 
 **Third-party services:**
+- OpenRouter API / Google Gemini API — AI Tutor & quiz generator
 - Razorpay — payment processing
 - Cloudinary — image and video storage
 - Nodemailer — OTP, password reset, and payment confirmation emails
@@ -49,22 +53,22 @@ This codebase's structure, controller names, and flow (Auth → OTP → Section/
 StudyAdda-main/
 ├── src/                        # React frontend
 │   ├── component/
-│   │   ├── core/                # Feature components: Auth, Dashboard, Course, HomePage, ViewCourse...
-│   │   └── common/               # Shared UI (Navbar, Footer, Tab, RatingStars...)
+│   │   ├── core/                # Feature components: Auth, Dashboard, Course, HomePage, ViewCourse (AiTutor)...
+│   │   └── common/               # Shared UI (Navbar, Footer, ConfirmationModal, Tab, RatingStars...)
 │   ├── pages/                   # Route-level pages
-│   ├── services/                # Axios instance + API operation functions
+│   ├── services/                # Axios instance + API operation functions (aiAPI)
 │   ├── slices/                  # Redux slices (auth, cart, course, profile, viewCourse)
 │   ├── reducer/                  # Combined Redux store
 │   ├── hooks/                    # Custom hooks
 │   └── data/                     # Static config (nav links, footer links, country codes)
 └── Server/
     ├── config/                   # DB, Cloudinary, Razorpay setup
-    ├── controllers/               # Route logic (Auth, Course, Section, Payments, Profile, etc.)
+    ├── controllers/               # Route logic (AI, Auth, Course, Section, Payments, Profile, etc.)
     ├── middlewares/               # auth.js — JWT verification + role checks
     ├── models/                    # Mongoose schemas
     ├── mail/templates/            # HTML email templates
     ├── utils/                     # Image uploader, mail sender, duration formatter
-    └── routes/                    # API route definitions
+    └── routes/                    # API route definitions (AI, User, Course, etc.)
 ```
 
 ## Getting Started
@@ -72,7 +76,7 @@ StudyAdda-main/
 ### Prerequisites
 - Node.js (v18+ recommended)
 - A MongoDB instance (local or Atlas)
-- Cloudinary account, Razorpay account, and an SMTP-capable email account
+- OpenRouter API Key (or Gemini API Key), Cloudinary account, Razorpay account, and an SMTP-capable email account
 
 ### 1. Clone and install
 ```bash
@@ -89,6 +93,7 @@ Create a `.env` file inside `Server/`:
 PORT=4000
 MONGODB_URL=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
+OPENROUTER_API_KEY=your_openrouter_api_key
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
@@ -137,10 +142,14 @@ Frontend runs on `http://localhost:5173`, backend on `http://localhost:4000` by 
 | POST | `/api/v1/payment/verifyPayment` | Verify Razorpay signature and enroll student |
 | GET | `/api/v1/profile/getEnrolledCourses` | Get a student's enrolled courses |
 | GET | `/api/v1/profile/instructorDashboard` | Instructor's course/revenue stats |
+| POST | `/api/v1/ai/ask-doubt` | Ask AI Tutor a doubt about current lecture/topic |
+| POST | `/api/v1/ai/explain-topic` | Generate structured explanation with real-world analogies |
+| POST | `/api/v1/ai/generate-quiz` | Dynamically generate multiple-choice quiz questions |
 | POST | `/api/v1/reach/contact` | Submit contact form |
 
 ## Notes
 
 - Auth is custom (not a third-party provider): JWT is issued on login and role (`Student`/`Instructor`/`Admin`) is checked via middleware on protected routes.
 - Payment flow is two-step: `capturePayment` creates the Razorpay order, `verifyPayment` checks the signature server-side and only then marks the student enrolled — know this distinction if asked in an interview, since skipping the verification step is the difference between "we check payment" and "we don't."
-- No `.env.example` exists in the repo. Add one before pushing publicly, listing variable names only — never real keys.
+- AI Tutor uses OpenRouter API with automatic free model fallback (`openrouter/free`, `llama-3.3-70b`, `gemma-4-31b`, `qwen3-coder`).
+
