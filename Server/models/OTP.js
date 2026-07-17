@@ -79,13 +79,13 @@ async function sendVerificationEmail(email, otp) {
 	try {
 		await mailSender(
 			email,
-			"Verification Email",
+			"Verification Email from StudyAdda",
 			emailTemplate(otp)
 		);
-
-		console.log("Verification email attempted");
+		console.log("Verification email sent successfully");
 	} catch (error) {
-		console.error("Email send failed (non-blocking):", error.message);
+		console.error("Email send failed:", error.message);
+		throw error;
 	}
 }
 
