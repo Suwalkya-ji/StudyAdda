@@ -128,8 +128,8 @@ const Navbar = () => {
         {/* Desktop Right */}
         <div className="hidden md:flex items-center gap-x-4">
           {user && user.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
-            <Link to="/dashboard/cart" className="relative">
-              <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
+            <Link to="/dashboard/cart" className="relative cursor-pointer transition-transform duration-200 hover:scale-110">
+              <AiOutlineShoppingCart className="text-2xl text-richblack-100 hover:text-yellow-200 transition-colors duration-200" />
               {totalItems > 0 && (
                 <span className="absolute -top-2 -right-2 grid h-5 w-5 place-items-center
                 rounded-full bg-yellow-300 text-xs font-bold text-richblack-900">
@@ -142,12 +142,12 @@ const Navbar = () => {
           {!token && (
             <>
               <Link to="/login">
-                <button className="rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-sm text-richblack-100">
+                <button className="cursor-pointer rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-sm text-richblack-100 transition-all duration-200 hover:bg-richblack-700 hover:border-richblack-500 hover:text-white hover:scale-95">
                   Log in
                 </button>
               </Link>
               <Link to="/signup">
-                <button className="rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-sm text-richblack-100">
+                <button className="cursor-pointer rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-sm text-richblack-100 transition-all duration-200 hover:bg-richblack-700 hover:border-richblack-500 hover:text-white hover:scale-95">
                   Sign Up
                 </button>
               </Link>
@@ -160,7 +160,7 @@ const Navbar = () => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setOpenMenu(!openMenu)}
-          className="md:hidden"
+          className="md:hidden cursor-pointer p-1 rounded-md transition-colors duration-200 hover:bg-richblack-700"
         >
           <AiOutlineMenu className="text-2xl text-richblack-100" />
         </button>
@@ -180,7 +180,7 @@ const Navbar = () => {
               {/* Catalog Button */}
               <button
                 onClick={() => setOpenCatalog((prev) => !prev)}
-                className="flex w-full items-center justify-between text-sm hover:text-yellow-300"
+                className="flex w-full items-center justify-between text-sm cursor-pointer hover:text-yellow-300 transition-colors duration-200"
               >
                 <span>Catalog</span>
                 <BsChevronDown
@@ -209,7 +209,7 @@ const Navbar = () => {
                             setOpenMenu(false)
                             setOpenCatalog(false)
                           }}
-                          className="text-sm text-richblack-200 hover:text-yellow-300"
+                          className="text-sm text-richblack-200 cursor-pointer hover:text-yellow-300 transition-colors duration-200"
                         >
                           {category.name}
                         </Link>
@@ -226,7 +226,7 @@ const Navbar = () => {
             <Link
               to={link.path}
               onClick={() => setOpenMenu(false)}
-              className="block text-sm hover:text-yellow-300"
+              className="block text-sm cursor-pointer hover:text-yellow-300 transition-colors duration-200"
             >
               {link.title}
             </Link>
@@ -242,12 +242,12 @@ const Navbar = () => {
       ) : (
         <div className="flex flex-col gap-3 border-t border-richblack-700 pt-4">
           <Link to="/login" onClick={() => setOpenMenu(false)}>
-            <button className="w-full rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-center text-sm text-richblack-100">
+            <button className="w-full rounded-md border border-richblack-700 bg-richblack-800 px-4 py-2 text-center text-sm text-richblack-100 cursor-pointer transition-all duration-200 hover:bg-richblack-700 hover:text-white">
               Log in
             </button>
           </Link>
           <Link to="/signup" onClick={() => setOpenMenu(false)}>
-            <button className="w-full rounded-md border border-richblack-700 bg-yellow-50 px-4 py-2 text-center text-sm font-semibold text-richblack-900">
+            <button className="w-full rounded-md border border-richblack-700 bg-yellow-50 px-4 py-2 text-center text-sm font-semibold text-richblack-900 cursor-pointer transition-all duration-200 hover:bg-yellow-100 hover:scale-95">
               Sign Up
             </button>
           </Link>
